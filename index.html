@@ -22,7 +22,54 @@
     --muted: #837a9f;
     --success-color: #ccff33;
     --warning-color: #ffb300;
+    --rainbow-gradient: linear-gradient(45deg, #ff2f92, #ffcc00, #2cfc03, #28f0ff, #8b5cf6, #ff2f92);
   }
+
+  /* CLASS ĐỔI THEME MÀU */
+  body.theme-matrix {
+    background: radial-gradient(circle 600px at 10% -10%, rgba(0, 255, 70, 0.1), transparent 80%), #020b04;
+    --bg-void: #020b04; --bg-panel: rgba(5, 26, 10, 0.8); --bg-panel-2: rgba(10, 38, 16, 0.5);
+    --violet: #00ff46; --magenta: #00ff88; --cyan: #00ffcc; --lime: #33ff00; --text: #dffff0; --muted: #4e8c68;
+    --rainbow-gradient: linear-gradient(45deg, #00ff46, #00ffcc, #33ff00, #00ff46);
+  }
+  body.theme-ocean {
+    background: radial-gradient(circle 600px at 10% -10%, rgba(6, 182, 212, 0.15), transparent 80%), #040d1a;
+    --bg-void: #040d1a; --bg-panel: rgba(10, 25, 47, 0.8); --bg-panel-2: rgba(17, 34, 64, 0.5);
+    --violet: #00f0ff; --magenta: #3b82f6; --cyan: #60a5fa; --lime: #00f5d4; --text: #f1f5f9; --muted: #64748b;
+    --rainbow-gradient: linear-gradient(45deg, #00f0ff, #3b82f6, #00f5d4, #00f0ff);
+  }
+  /* THEME CẦU VỒNG SIÊU HIỆU ỨNG CỦA BÉ NÈ */
+  body.theme-rainbow {
+    background: linear-gradient(125deg, #0f051d, #140717, #05141a, #0c1a05, #170710);
+    background-size: 400% 400%;
+    animation: rainbowBg 15s ease infinite;
+    --bg-void: transparent;
+    --bg-panel: rgba(15, 10, 30, 0.65);
+    --bg-panel-2: rgba(5, 2, 15, 0.6);
+    --line: rgba(255, 255, 255, 0.1);
+    --violet: #a855f7; --magenta: #ec4899; --cyan: #06b6d4; --lime: #10b981;
+    --rainbow-gradient: linear-gradient(45deg, #ff0055, #ffcc00, #00ff66, #00ffff, #7f00ff, #ff0055);
+  }
+  body.theme-rainbow .panel {
+    border: 1px solid transparent;
+    background-image: linear-gradient(var(--bg-panel), var(--bg-panel)), var(--rainbow-gradient);
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+    background-size: 100% 100%, 300% 300%;
+    animation: rainbowGlow 8s linear infinite;
+    box-shadow: 0 10px 30px rgba(168, 85, 247, 0.15);
+  }
+
+  @keyframes rainbowBg {
+    0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; }
+  }
+
+  /* CLASS TẮT HIỆU ỨNG ĐỂ GIẢM LAG */
+  body.no-effects, body.no-effects * { animation: none !important; transition: none !important; }
+  body.no-effects h1, body.no-effects .dev-name { background: var(--cyan) !important; -webkit-text-fill-color: var(--text) !important; background-clip: initial !important; }
+  body.no-effects .pulse-line { width: 100% !important; background: var(--violet) !important; opacity: 0.3; }
+  body.no-effects .btn-glow-scan::after { display: none !important; }
+  body.no-effects .neon-spinner { border-color: var(--cyan) !important; }
 
   * { box-sizing: border-box; }
   body {
@@ -30,38 +77,30 @@
       radial-gradient(circle 600px at 10% -10%, rgba(139, 92, 246, 0.18), transparent 80%),
       radial-gradient(circle 500px at 90% 20%, rgba(255, 47, 146, 0.12), transparent 70%),
       var(--bg-void);
-    color: var(--text);
-    font-family: 'Inter', sans-serif;
-    min-height: 100vh;
-    overflow-x: hidden;
+    color: var(--text); font-family: 'Inter', sans-serif; min-height: 100vh; overflow-x: hidden;
   }
   .wrap { max-width: 900px; margin: 0 auto; width: 100%; padding: 28px 18px 60px; }
 
   .eyebrow {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
-    color: var(--lime); opacity: 0.85; margin-bottom: 10px;
-    text-shadow: 0 0 8px rgba(204, 255, 51, 0.4);
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--lime); opacity: 0.85; margin-bottom: 10px; text-shadow: 0 0 8px rgba(204, 255, 51, 0.4);
   }
   
   h1 {
-    font-family: 'Unbounded', sans-serif;
-    font-weight: 900; font-size: clamp(28px, 6vw, 54px);
-    margin: 0; line-height: 1.1; letter-spacing: -0.5px;
-    background: linear-gradient(45deg, #ff2f92, #ffcc00, #2cfc03, #28f0ff, #8b5cf6, #ff2f92);
-    background-size: 300% auto;
+    font-family: 'Unbounded', sans-serif; font-weight: 900; font-size: clamp(42px, 10vw, 90px);
+    margin: 0; line-height: 1.05; letter-spacing: -1px;
+    background: var(--rainbow-gradient); background-size: 300% auto;
     -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
     animation: rainbowGlow 5s ease infinite;
-    filter: drop-shadow(0 2px 10px rgba(40, 240, 255, 0.35)) drop-shadow(0 4px 30px rgba(255, 47, 146, 0.2));
+    filter: drop-shadow(0 2px 15px rgba(40, 240, 255, 0.4)) drop-shadow(0 4px 40px rgba(255, 47, 146, 0.25));
   }
 
   .dev-signature {
-    font-family: 'Unbounded', sans-serif; font-size: 14px; font-weight: 700; margin: 8px 0 16px; color: var(--muted);
+    font-family: 'Unbounded', sans-serif; font-size: 14px; font-weight: 700; margin: 12px 0 16px; color: var(--muted);
     display: flex; align-items: center; gap: 6px;
   }
   .dev-name {
-    background: linear-gradient(45deg, #ff2f92, #ffcc00, #2cfc03, #28f0ff, #8b5cf6, #ff2f92);
-    background-size: 300% auto; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+    background: var(--rainbow-gradient); background-size: 300% auto; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
     animation: rainbowGlow 4s linear infinite; font-weight: 900; font-size: 16px; letter-spacing: 0.5px;
     filter: drop-shadow(0 0 8px rgba(40, 240, 255, 0.6)) drop-shadow(0 0 15px rgba(255, 47, 146, 0.4));
   }
@@ -80,6 +119,7 @@
 
   .panel {
     background: var(--bg-panel); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid var(--line); border-radius: 20px; padding: 24px; margin-bottom: 24px; box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s, box-shadow 0.3s;
   }
   .panel h2 {
     font-family: 'Unbounded', sans-serif; font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; margin: 0 0 18px; color: var(--text); display: flex; align-items: center; gap: 8px;
@@ -100,10 +140,11 @@
   .password-input-wrapper { position: relative; display: flex; align-items: center; }
   .password-input-wrapper .custom-username-input { padding-right: 90px; font-family: 'JetBrains Mono', monospace; color: var(--lime); }
   
+  /* ANIMATION CHO TẤT CẢ CÁC LOẠI BUTTON */
   .btn-copy-inline {
-    position: absolute; right: 8px; padding: 6px 12px; background: rgba(40, 240, 255, 0.15); border: 1px solid rgba(40, 240, 255, 0.3); color: var(--cyan); border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer; transition: all 0.2s;
+    position: absolute; right: 8px; padding: 6px 12px; background: rgba(40, 240, 255, 0.15); border: 1px solid rgba(40, 240, 255, 0.3); color: var(--cyan); border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   }
-  .btn-copy-inline:hover { background: var(--cyan); color: #000; }
+  .btn-copy-inline:hover { background: var(--cyan); color: #000; transform: scale(1.05); box-shadow: 0 0 12px var(--cyan); }
 
   .domain-select {
     width: 100%; padding: 14px 18px; border-radius: 12px; border: 1px solid var(--line); background: var(--bg-panel-2); color: var(--text); font-family: 'JetBrains Mono', monospace; font-size: 14px; outline: none; cursor: pointer; appearance: none; -webkit-appearance: none;
@@ -123,14 +164,16 @@
   .btn-refresh-inbox {
     padding: 0 20px; border-radius: 50px; border: 1px solid rgba(40, 240, 255, 0.3); background: rgba(40, 240, 255, 0.1); color: var(--cyan); font-weight: 700; font-size: 12px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: all 0.25s ease;
   }
-  .btn-refresh-inbox:hover { background: var(--cyan); color: #000; box-shadow: 0 0 15px rgba(40, 240, 255, 0.4); transform: scale(1.03); }
+  .btn-refresh-inbox:hover { background: var(--cyan); color: #000; box-shadow: 0 0 15px rgba(40, 240, 255, 0.4); transform: scale(1.05); }
 
   .developer-panel { display: none; opacity: 0; transform: translateY(-10px); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
   .developer-panel.show { display: block; opacity: 1; transform: translateY(0); }
   .language-runner-select { padding: 10px 16px; border-radius: 8px; border: 1px solid rgba(139, 92, 246, 0.3); background: #090712; color: var(--lime); font-family: 'JetBrains Mono', monospace; font-size: 13px; outline: none; width: 100%; max-width: 500px; }
   .search-code-wrapper { display: flex; gap: 8px; margin-bottom: 10px; }
   .search-code-input { flex: 1; padding: 10px 16px; border-radius: 8px; border: 1px solid rgba(139, 92, 246, 0.3); background: #090712; color: var(--cyan); font-family: 'JetBrains Mono', monospace; font-size: 12.5px; outline: none; }
-  .btn-search-nav { padding: 0 16px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.1); background: var(--bg-panel-2); color: var(--text); cursor: pointer; font-weight: 600; font-size: 12px; display: flex; align-items: center; justify-content: center; }
+  
+  .btn-search-nav { padding: 0 16px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.1); background: var(--bg-panel-2); color: var(--text); cursor: pointer; font-weight: 600; font-size: 12px; display: flex; align-items: center; justify-content: center; transition: all 0.25s; }
+  .btn-search-nav:hover { background: var(--violet); color: #fff; transform: translateY(-1px); box-shadow: 0 4px 10px rgba(139, 92, 246, 0.4); }
 
   .code-editor-container { display: flex; width: 100%; height: 220px; background: #090712; border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 12px; overflow: hidden; margin-bottom: 12px; position: relative; box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8); }
   .line-numbers { width: 42px; padding: 14px 0; background: #05040a; border-right: 1px solid rgba(255, 255, 255, 0.05); color: #4b4566; font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.5; text-align: right; padding-right: 10px; user-select: none; overflow-y: hidden; white-space: pre; }
@@ -143,30 +186,31 @@
     position: relative; overflow: hidden; z-index: 1; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
   }
   .btn-create { background: linear-gradient(135deg, var(--violet), var(--cyan), var(--magenta)); background-size: 200% auto; box-shadow: 0 4px 15px rgba(40,240,255,0.25); }
-  .btn-create:hover { background-position: right center; transform: translateY(-2px) scale(1.02); box-shadow: 0 8px 25px rgba(40,240,255,0.5); }
+  .btn-create:hover { background-position: right center; transform: translateY(-2px) scale(1.04); box-shadow: 0 8px 25px rgba(40,240,255,0.5); }
   .btn-check-custom { background: linear-gradient(135deg, #a855f7, #ec4899); box-shadow: 0 4px 15px rgba(236, 72, 153, 0.3); }
-  .btn-check-custom:hover { background: linear-gradient(135deg, #ec4899, var(--cyan)); transform: translateY(-2px); }
+  .btn-check-custom:hover { background: linear-gradient(135deg, #ec4899, var(--cyan)); transform: translateY(-2px) scale(1.04); box-shadow: 0 8px 25px rgba(236, 72, 153, 0.5); }
   .btn-config { background: linear-gradient(135deg, #10b981, #06b6d4); box-shadow: 0 4px 15px rgba(6, 182, 212, 0.3); }
-  .btn-config:hover { background: linear-gradient(135deg, #06b6d4, var(--lime)); transform: translateY(-2px); color: #06050b; }
+  .btn-config:hover { background: linear-gradient(135deg, #06b6d4, var(--lime)); transform: translateY(-2px) scale(1.04); color: #06050b; box-shadow: 0 8px 25px rgba(204, 255, 51, 0.5); }
   .btn-upload { background: linear-gradient(135deg, #1d4ed8, #2563eb); }
-  .btn-upload:hover { background: linear-gradient(135deg, #2563eb, var(--cyan)); transform: translateY(-2px); }
+  .btn-upload:hover { background: linear-gradient(135deg, #2563eb, var(--cyan)); transform: translateY(-2px) scale(1.04); box-shadow: 0 8px 20px rgba(37, 99, 235, 0.5); }
   .btn-export { background: var(--bg-panel-2); color: var(--text); border: 1px solid rgba(255, 255, 255, 0.15); }
-  .btn-export:hover { border-color: var(--lime); color: var(--lime); transform: translateY(-2px); }
+  .btn-export:hover { border-color: var(--lime); color: var(--lime); transform: translateY(-2px) scale(1.04); box-shadow: 0 6px 15px rgba(204, 255, 51, 0.2); }
   .btn-delete-all { background: linear-gradient(135deg, #ff2f92, #9a0044); }
-  .btn-delete-all:hover { background: linear-gradient(135deg, #ff5858, #ff2f92); transform: translateY(-2px); animation: pulseDanger 0.4s infinite alternate; }
-  @keyframes pulseDanger { 0% { transform: translateY(-2px) scale(1); } 100% { transform: translateY(-2px) scale(1.03); } }
+  .btn-delete-all:hover { background: linear-gradient(135deg, #ff5858, #ff2f92); transform: translateY(-2px) scale(1.04); box-shadow: 0 8px 25px rgba(255, 47, 146, 0.5); }
   .btn-glow-scan::after { content: ''; position: absolute; top: -50%; left: -60%; width: 30%; height: 200%; background: rgba(255, 255, 255, 0.35); transform: rotate(30deg); animation: lightShine 3s infinite ease-in-out; z-index: 2; pointer-events: none; }
   @keyframes lightShine { 0% { left: -60%; } 40% { left: 140%; } 100% { left: 140%; } }
 
-  .btn-mini { padding: 6px 12px; font-size: 11px; min-width: auto; border-radius: 8px; font-weight: 700; transition: all 0.2s; white-space: nowrap; }
+  /* HIỆU ỨNG CHO CÁC NÚT NHỎ (MINI BUTTONS) */
+  .btn-mini { padding: 6px 12px; font-size: 11px; min-width: auto; border-radius: 8px; font-weight: 700; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); white-space: nowrap; }
   .btn-copy { background: rgba(40, 240, 255, 0.1); color: var(--cyan); border: 1px solid rgba(40, 240, 255, 0.3); }
-  .btn-copy:hover { background: var(--cyan); color: #000; }
+  .btn-copy:hover { background: var(--cyan); color: #000; transform: scale(1.1); box-shadow: 0 0 12px var(--cyan); }
   .btn-delete { background: rgba(255, 47, 146, 0.1); color: var(--magenta); border: 1px solid rgba(255, 47, 146, 0.3); }
-  .btn-delete:hover { background: var(--magenta); color: #fff; }
+  .btn-delete:hover { background: var(--magenta); color: #fff; transform: scale(1.1); box-shadow: 0 0 12px var(--magenta); }
   
   .btn-copy-otp {
     background: linear-gradient(135deg, var(--lime), #7cff9e); color: #0a0912; font-weight: 800; border: none; animation: pulseGlow 2s infinite alternate;
   }
+  .btn-copy-otp:hover { transform: scale(1.08) !important; box-shadow: 0 0 18px var(--lime) !important; }
   @keyframes pulseGlow { 0% { transform: scale(1); box-shadow: 0 0 8px rgba(204,255,51,0.4); } 100% { transform: scale(1.03); box-shadow: 0 0 22px rgba(204,255,51,0.7); } }
 
   .mail-list { max-height: 230px; overflow-y: auto; background: var(--bg-panel-2); border-radius: 14px; padding: 10px; margin-bottom: 8px; border: 1px solid var(--line); }
@@ -207,6 +251,12 @@
   .toast { position: fixed; bottom: 24px; right: 24px; background: var(--lime); color: #0a0912; padding: 12px 24px; border-radius: 50px; font-weight: 700; font-size: 13px; display: none; z-index: 99999; box-shadow: 0 8px 30px rgba(0,0,0,0.4); }
   .status-bar { text-align: center; font-size: 11px; font-family: 'JetBrains Mono', monospace; color: var(--muted); margin-top: 14px; }
 
+  /* STYLE KHU VỰC ĐIỀU KHIỂN THEME MỚI & HOVER CHO THEM BUTTONS */
+  .theme-btn { padding: 8px 16px; font-size: 11px; font-weight: 800; text-transform: uppercase; border-radius: 10px; border: 1px solid var(--line); color: #fff; cursor: pointer; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); }
+  .theme-btn:hover { transform: translateY(-2px) scale(1.05); box-shadow: 0 6px 15px rgba(255, 255, 255, 0.15); }
+  .btn-toggle-lag { background: rgba(255, 47, 146, 0.2); border-color: #ff2f92; color: #ff2f92; }
+  .btn-toggle-lag.active-off { background: #ff2f92; color: #fff; }
+
   ::-webkit-scrollbar { height: 5px; width: 5px; }
   ::-webkit-scrollbar-track { background: #0f172a; }
   ::-webkit-scrollbar-thumb { background: #334155; border-radius: 99px; }
@@ -232,8 +282,23 @@
     <div class="pulse-track"><div class="pulse-line"></div></div>
   </header>
 
+  <!-- BẢNG ĐIỀU KHIỂN HIỆU ỨNG & MÀU SẮC ĐÃ THÊM BUTTON CẦU VỒNG -->
+  <div class="panel mt-6" style="border-color: rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.02); padding: 16px;">
+    <h2 style="margin-bottom: 12px;"><i class="fa-solid fa-palette text-xs"></i> Bảng điều khiển hiệu ứng & màu sắc</h2>
+    <div class="flex flex-wrap gap-3 justify-between items-center">
+      <div class="flex flex-wrap gap-2">
+        <button class="theme-btn" style="background: linear-gradient(135deg, #8b5cf6, #ff2f92);" onclick="changeTheme('cyber')">🎨 Neon Cyber</button>
+        <button class="theme-btn" style="background: linear-gradient(135deg, #00ff46, #052a0a); border-color:#00ff46;" onclick="changeTheme('matrix')">📟 Matrix Green</button>
+        <button class="theme-btn" style="background: linear-gradient(135deg, #00f0ff, #0a192f); border-color:#00f0ff;" onclick="changeTheme('ocean')">🌊 Deep Ocean</button>
+        <!-- BUTTON THEME MỚI -->
+        <button class="theme-btn" style="background: linear-gradient(45deg, #ff0055, #00ffff); border-color:#fff;" onclick="changeTheme('rainbow')">🌈 Rainbow Glow</button>
+      </div>
+      <button class="theme-btn btn-toggle-lag" id="lagToggleBtn" onclick="toggleLagReducer()">⚡ Tắt Hiệu Ứng (Giảm Lag: OFF)</button>
+    </div>
+  </div>
+
   <!-- KHUNG 1: CẤU HÌNH TẠO MAIL MỚI -->
-  <div class="panel mt-6">
+  <div class="panel">
     <h2>1. Cấu hình định danh</h2>
     <div class="field">
       <label>Tên tài khoản (để trống tạo ngẫu nhiên)</label>
@@ -256,6 +321,7 @@
     </div>
   </div>
 
+  <!-- KHUNG MODAL CHECK CHUYÊN BIỆT -->
   <div class="modal-overlay" id="customCheckModal">
     <div class="modal-custom-box flex flex-col">
       <div class="border-b border-slate-800 bg-[#0b0f19]/90 px-6 py-4 flex justify-between items-center rounded-t-2xl">
@@ -271,7 +337,7 @@
                   <span id="custom-status-dot" class="w-2 h-2 rounded-full bg-slate-600"></span>
                   <span id="custom-status-text">Chưa đăng nhập</span>
               </div>
-              <button onclick="closeCustomCheckModal()" class="bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold py-1.5 px-3 rounded-xl transition">ĐÓNG ✕</button>
+              <button onclick="closeCustomCheckModal()" class="bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold py-1.5 px-3 rounded-xl transition hover:scale-105 shadow-md">ĐÓNG ✕</button>
           </div>
       </div>
 
@@ -287,7 +353,7 @@
                       <label class="text-[10px] text-slate-400">Mật khẩu (Password):</label>
                       <input type="password" id="login-password" placeholder="••••••••" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 mt-1 text-xs text-slate-300 font-mono outline-none focus:border-indigo-500">
                   </div>
-                  <button onclick="loginAndCheck()" id="login-btn" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold py-2.5 rounded-xl transition flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/10">
+                  <button onclick="loginAndCheck()" id="login-btn" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold py-2.5 rounded-xl transition flex items-center justify-center gap-2 shadow-lg hover:scale-[1.02]">
                       <i class="fa-solid fa-right-to-bracket"></i> ĐĂNG NHẬP & QUÉT THƯ
                   </button>
               </div>
@@ -295,7 +361,7 @@
               <div class="bg-[#0b0f19] border border-slate-800 rounded-2xl p-4 flex flex-col h-[300px] shadow-xl">
                   <div class="flex justify-between items-center mb-3">
                       <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Hộp Thư Đến Riêng</span>
-                      <button onclick="fetchInbox()" id="refresh-btn" class="text-slate-500 hover:text-indigo-400 hidden"><i class="fa-solid fa-arrows-rotate text-xs"></i></button>
+                      <button onclick="fetchInbox()" id="refresh-btn" class="text-slate-500 hover:text-indigo-400 hidden transition hover:scale-110"><i class="fa-solid fa-arrows-rotate text-xs"></i></button>
                   </div>
                   <div id="email-list" class="flex-grow overflow-y-auto space-y-2 pr-1 text-center py-12 text-slate-600 italic text-xs">Vui lòng đăng nhập để tải hộp thư.</div>
               </div>
@@ -352,7 +418,6 @@
   <!-- KHUNG DANH SÁCH MAIL CHÍNH -->
   <div class="panel">
     <h2>2. Hộp địa chỉ đã tạo & Đăng nhập <span class="tag" id="mailCount">Tổng: 0</span></h2>
-    <!-- ĐÃ DỜI Ô MẬT KHẨU XUỐNG ĐÂY THEO Ý BÉ -->
     <div class="field mb-4">
       <label>Mật khẩu của Email đang chọn</label>
       <div class="password-input-wrapper">
@@ -404,10 +469,47 @@ window.onload = function() {
   const devPanel = document.getElementById('developerToolsPanel');
   if (isDevPanelOpen) { devPanel.style.display = 'block'; setTimeout(() => devPanel.classList.add('show'), 10); }
 
+  const savedTheme = localStorage.getItem('glow_theme_v3') || 'cyber';
+  changeTheme(savedTheme);
+  const savedLag = localStorage.getItem('glow_no_effects_v3') === 'true';
+  if (savedLag) { toggleLagReducer(true); }
+
   loadAvailableDomains(); renderMailList();
   if (currentActiveId) { selectMail(currentActiveId); }
   startAutoRefresh();
 };
+
+/* HÀM ĐỔI THEME MÀU TÍCH HỢP CẦU VỒNG */
+function changeTheme(theme) {
+  document.body.classList.remove('theme-matrix', 'theme-ocean', 'theme-rainbow');
+  if (theme === 'matrix') document.body.classList.add('theme-matrix');
+  if (theme === 'ocean') document.body.classList.add('theme-ocean');
+  if (theme === 'rainbow') document.body.classList.add('theme-rainbow');
+  localStorage.setItem('glow_theme_v3', theme);
+  showToast(`🎨 Đã chuyển sang chế độ màu: ${theme.toUpperCase()}`);
+}
+
+/* HÀM GIẢM LAG */
+function toggleLagReducer(forceLoad = false) {
+  const btn = document.getElementById('lagToggleBtn');
+  let isNoEffects = document.body.classList.contains('no-effects');
+  
+  if (forceLoad) { isNoEffects = false; }
+
+  if (!isNoEffects) {
+    document.body.classList.add('no-effects');
+    btn.classList.add('active-off');
+    btn.innerText = "⚡ Mở Hiệu Ứng (Giảm Lag: ON)";
+    localStorage.setItem('glow_no_effects_v3', 'true');
+    if (!forceLoad) showToast("📴 Đã tắt hiệu ứng chuyển động để giảm lag!");
+  } else {
+    document.body.classList.remove('no-effects');
+    btn.classList.remove('active-off');
+    btn.innerText = "⚡ Tắt Hiệu Ứng (Giảm Lag: OFF)";
+    localStorage.setItem('glow_no_effects_v3', 'false');
+    if (!forceLoad) showToast("💡 Đã bật lại tất cả hiệu ứng động!");
+  }
+}
 
 function openCustomCheckModal() { playMechanicalSound(500); document.getElementById('customCheckModal').style.display = 'flex'; }
 function closeCustomCheckModal() { document.getElementById('customCheckModal').style.display = 'none'; }
@@ -438,7 +540,7 @@ async function loginAndCheck() {
         fetchInbox();
         if (autoRefreshInterval) clearInterval(autoRefreshInterval);
         autoRefreshInterval = setInterval(fetchInbox, 5000);
-        showToast("Đăng nhập khung quét biệt lập thành công!");
+        showToast("Đăng nhập hòm phụ thành công!");
     } catch (err) {
         alert(err.message); updateCustomStatus("offline", "Đăng nhập thất bại");
     } finally {
@@ -460,7 +562,7 @@ async function fetchInbox() {
 
         if (messages.length === 0) {
             listContainer.className = "flex-grow overflow-y-auto space-y-2 pr-1 text-center py-12 text-slate-600 italic text-xs";
-            listContainer.innerHTML = "Hộp thư trống (Chưa có thư gửi đến).";
+            listContainer.innerHTML = "Hộp thư trống.";
         } else {
             listContainer.className = "flex-grow overflow-y-auto space-y-2 pr-1 text-left";
             listContainer.innerHTML = "";
@@ -479,7 +581,7 @@ async function fetchInbox() {
                 `;
             });
         }
-    } catch (err) { console.error("Lỗi quét hòm thư phụ:", err); }
+    } catch (err) { console.error(err); }
     finally { setTimeout(() => refreshBtn.classList.remove('animate-spin'), 500); }
 }
 
@@ -511,13 +613,13 @@ async function readEmail(msgId) {
             panel.classList.remove('hidden');
             activeLinks.forEach((link, i) => {
                 const aBtn = document.createElement('a'); aBtn.href = link.href; aBtn.target = "_blank"; aBtn.rel = "noopener noreferrer";
-                aBtn.className = "bg-indigo-600 hover:bg-indigo-500 text-white text-[10px] font-bold py-1.5 px-3 rounded-lg transition flex items-center gap-1 shadow-md";
+                aBtn.className = "bg-indigo-600 hover:bg-indigo-500 text-white text-[10px] font-bold py-1.5 px-3 rounded-lg transition flex items-center gap-1 shadow-md hover:scale-105";
                 aBtn.innerHTML = `<i class="fa-solid fa-external-link text-[8px]"></i> ${escapeHTML(link.innerText.trim() || `Mở Link #${i+1}`)}`;
                 linkList.appendChild(aBtn);
             });
         } else { panel.classList.add('hidden'); }
         fetchInbox();
-    } catch (err) { bodyContainer.innerHTML = `<div class="text-center py-20 text-red-500/60 italic">Không thể tải thư. Vui lòng bấm làm mới lại!</div>`; }
+    } catch (err) { bodyContainer.innerHTML = `<div class="text-center py-20 text-red-500/60 italic">Không thể tải thư.</div>`; }
 }
 
 function updateCustomStatus(type, text) {
@@ -613,7 +715,7 @@ function runCodePreview() {
   let modal = document.getElementById('previewModal');
   if (!modal) {
     modal = document.createElement('div'); modal.id = 'previewModal';
-    modal.style = `position: fixed; top: 4%; left: 4%; width: 92%; height: 92%; background: var(--bg-void); border: 2px solid var(--cyan); border-radius: 20px; z-index: 20000; display: flex; flex-direction: column;`;
+    modal.style = `position: fixed; top: 4%; left: 4%; width: 92%; height: 92%; background: #06050b; border: 2px solid var(--cyan); border-radius: 20px; z-index: 20000; display: flex; flex-direction: column;`;
     modal.innerHTML = `<div style="display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; background: rgba(19, 16, 34, 0.95);"><span style="font-family: 'Unbounded', sans-serif; color: var(--cyan); font-size: 13px;">👁️ LIVE PREVIEW</span><button onclick="document.getElementById('previewModal').style.display='none'" style="background: var(--magenta); color:#fff; border:none; padding:6px 14px; border-radius:50px; cursor:pointer;">ĐÓNG ✕</button></div><div style="flex:1;"><iframe id='previewIframe' style='width:100%; height:100%; border:none; background:#fff;'></iframe></div>`;
     document.body.appendChild(modal);
   }
