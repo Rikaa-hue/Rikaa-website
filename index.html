@@ -505,7 +505,17 @@ function toggleLagReducer(forceLoad = false) {
   }
 }
 
-function openCustomCheckModal() { playMechanicalSound(500); document.getElementById('customCheckModal').style.display = 'flex'; }
+// 🔄 ĐỒNG BỘ DỮ LIỆU EMAIL ĐANG CHỌN VÀO MODAL THỦ CÔNG
+function openCustomCheckModal() { 
+  playMechanicalSound(500); 
+  const currentAcc = accountsList.find(acc => acc.id === currentActiveId);
+  if (currentAcc) {
+    document.getElementById('login-email').value = currentAcc.address;
+    document.getElementById('login-password').value = currentAcc.password;
+  }
+  document.getElementById('customCheckModal').style.display = 'flex'; 
+}
+
 function closeCustomCheckModal() { document.getElementById('customCheckModal').style.display = 'none'; }
 
 async function loginAndCheck() {
@@ -673,7 +683,6 @@ function clearFormatterTextarea() {
   } 
 }
 
-// 🧠 HỆ THỐNG FORMATTER THÔNG MINH (EMAIL HOẶC VĂN BẢN THƯỜNG)
 function exportFormattedTextToTxt() {
   const rawText = document.getElementById('formatterTextarea').value;
   if (!rawText.trim()) { showToast("⚠️ Khung trống, không thể xuất!", true); return; }
@@ -923,7 +932,6 @@ function filterMessages() {
   for (let item of items) { item.style.display = item.innerText.toLowerCase().includes(query) ? 'block' : 'none'; }
 }
 
-// 📦 NÚT XUẤT DANH SÁCH MAIL ĐÃ ĐƯỢC CHUYỂN SANG ĐỊNH DẠNG EMAIL|PASSWORD
 function exportMailList() {
   if (accountsList.length === 0) { showToast("⚠️ Danh sách trống!", true); return; }
   let fileName = prompt("Nhập tên file lưu Email:", "danh_sach_mail"); if (fileName === null) return;
