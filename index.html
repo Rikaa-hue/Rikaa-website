@@ -263,7 +263,7 @@
     </div>
   </div>
 
-  <!-- PHẦN 1: CẤU HÌNH ĐỊNH DANH -->
+  <!-- PHẦN 1: CẤU HÌNH ĐỊNH DANH (NÚT TẠO MAIL + XUẤT + XÓA TẤT CẢ NẰM CHUNG) -->
   <div class="panel">
     <h2>1. Cấu hình định danh</h2>
     <div class="field">
@@ -303,7 +303,7 @@
     <div class="mail-list" id="mailList"></div>
   </div>
 
-  <!-- 🛠️ THANH ĐIỀU HƯỚNG 3 BUTTON -->
+  <!-- 🛠️ THANH ĐIỀU HƯỚNG 3 BUTTON ĐƯỢC DỜI Ở GIỮA PHẦN 2 VÀ HỘP THƯ ĐẾN -->
   <div class="nav-center-panel">
     <h2>🛠️ Bảng điều khiển mở rộng & Công cụ trợ năng</h2>
     <div class="btn-row">
@@ -316,7 +316,7 @@
   <!-- KHUNG HIỂN THỊ CỦA BỘ ĐỊNH DẠNG VĂN BẢN (FORMATTER NÂNG CẤP) -->
   <div class="panel formatter-panel" id="formatterToolsPanel" style="border-color: rgba(236, 72, 153, 0.35); background: rgba(18, 10, 24, 0.85);">
     <h2>✨ BỘ ĐỊNH DẠNG FILE THÔNG MINH <span class="tag" style="border-color: var(--magenta); color: var(--magenta);">Smart Formatter</span></h2>
-    <p class="text-xs text-slate-400 mb-3">Dán danh sách email (hoặc văn bản) vào đây. Hệ thống tự nhận diện: Nếu là Email sẽ bóc tách chuẩn form <code class="text-pink-400">1. account:... Pass:...</code>, ngược lại sẽ dàn trang văn bản rõ ràng, không rối mắt.</p>
+    <p class="text-xs text-slate-400 mb-3">Dán danh sách email hoặc văn bản vào đây. Hệ thống tự nhận diện: Nếu là Email sẽ bóc tách chuẩn form <code class="text-pink-400">1. account:... Pass:...</code>, ngược lại sẽ dàn trang văn bản rõ ràng, không rối mắt.</p>
     <div class="field">
       <div class="code-editor-container" style="height: 180px; border-color: rgba(236, 72, 153, 0.3);">
         <textarea class="scratchpad-area" id="formatterTextarea" placeholder="Dán danh sách email hoặc văn bản hỗn hợp vào đây..." spellcheck="false" style="color: #fbcfe8; font-family: sans-serif;"></textarea>
@@ -673,7 +673,7 @@ function clearFormatterTextarea() {
   } 
 }
 
-// 🧠 HỆ THỐNG FORMATTER THÔNG MINH MỚI (TỰ NHẬN DIỆN EMAIL HOẶC VĂN BẢN THƯỜNG)
+// 🧠 HỆ THỐNG FORMATTER THÔNG MINH (EMAIL HOẶC VĂN BẢN THƯỜNG)
 function exportFormattedTextToTxt() {
   const rawText = document.getElementById('formatterTextarea').value;
   if (!rawText.trim()) { showToast("⚠️ Khung trống, không thể xuất!", true); return; }
@@ -685,9 +685,7 @@ function exportFormattedTextToTxt() {
   let lines = rawText.split('\n');
   let isEmailList = false;
   let parsedAccounts = [];
-  let normalParagraphs = [];
 
-  // Quét xem nội dung có chứa email hay không
   lines.forEach(line => {
     let trimmed = line.trim();
     if (!trimmed) return;
@@ -699,11 +697,9 @@ function exportFormattedTextToTxt() {
   let structuredOutput = "";
 
   if (isEmailList) {
-    // Xử lý định dạng danh sách email theo yêu cầu của bé
     lines.forEach(line => {
       let t = line.trim();
       if (!t) return;
-      // Tách email và password bằng các ký tự phổ biến (: | khoảng trắng tab)
       let parts = t.split(/[:|\s\t]+/);
       let emailFound = "";
       let passFound = "(Trống)";
@@ -711,14 +707,11 @@ function exportFormattedTextToTxt() {
       parts.forEach(p => {
         if (p.includes('@') && !emailFound) {
           emailFound = p;
-        } else if (!emailFound && !passFound && p) {
-          // fallback
         } else if (emailFound && p && p !== emailFound && passFound === "(Trống)") {
           passFound = p;
         }
       });
 
-      // Nếu chỉ có một chuỗi chứa @ mà không tách được pass rõ ràng
       if (!emailFound && t.includes('@')) {
         emailFound = t;
       }
@@ -729,8 +722,7 @@ function exportFormattedTextToTxt() {
     });
 
     if (parsedAccounts.length === 0) {
-      // Fallback nếu không tách chuẩn regex được thì giữ dòng gốc nhưng bọc theo cấu trúc
-      lines.forEach((l, idx) => {
+      lines.forEach((l) => {
         if(l.trim()) parsedAccounts.push({ email: l.trim(), pass: "(Không rõ)" });
       });
     }
@@ -742,7 +734,6 @@ function exportFormattedTextToTxt() {
     structuredOutput += "-----------------------------------------\n" + `Tổng số lượng: ${parsedAccounts.length} tài khoản\nGlow Mail Formatter Platform.`;
 
   } else {
-    // Xử lý định dạng văn bản thường (Không bị rối mắt, dãn dòng ngay ngắn, bố cục sạch sẽ)
     let cleanTextLines = [];
     lines.forEach(line => {
       let cleanLine = line.trim();
@@ -752,7 +743,7 @@ function exportFormattedTextToTxt() {
     });
 
     structuredOutput = "=========================================\n       BẢN TRÌNH BÀY VĂN BẢN SẠCH SẼ\n=========================================\n\n";
-    cleanTextLines.forEach((para, idx) => {
+    cleanTextLines.forEach((para) => {
       structuredOutput += `${para}\n\n`;
     });
     structuredOutput += "-----------------------------------------\n" + `Trạng thái: Đã tối ưu hóa bố cục, chống rối mắt.\nGlow Mail Formatter Platform.`;
@@ -932,16 +923,18 @@ function filterMessages() {
   for (let item of items) { item.style.display = item.innerText.toLowerCase().includes(query) ? 'block' : 'none'; }
 }
 
+// 📦 NÚT XUẤT DANH SÁCH MAIL ĐÃ ĐƯỢC CHUYỂN SANG ĐỊNH DẠNG EMAIL|PASSWORD
 function exportMailList() {
   if (accountsList.length === 0) { showToast("⚠️ Danh sách trống!", true); return; }
   let fileName = prompt("Nhập tên file lưu Email:", "danh_sach_mail"); if (fileName === null) return;
   fileName = fileName.trim() ? fileName.trim() : `glow_mails_${Date.now()}`;
   if (!fileName.endsWith('.txt')) fileName += '.txt';
 
-  let textOutput = "=== DANH SÁCH EMAIL GLOW MAIL ===\n\n"; 
-  accountsList.forEach(acc => { textOutput += `Email: ${acc.address}\nPassword: ${acc.password}\n------------------------\n`; });
-  const link = document.createElement("a"); link.href = URL.createObjectURL(new Blob([textOutput], { type: "text/plain;" })); link.download = fileName; link.click();
-  showToast(`📦 Xuất thành công!`);
+  let textOutput = ""; 
+  accountsList.forEach(acc => { textOutput += `${acc.address}|${acc.password}\n`; });
+  
+  const link = document.createElement("a"); link.href = URL.createObjectURL(new Blob([textOutput], { type: "text/plain;charset=utf-8" })); link.download = fileName; link.click();
+  showToast(`📦 Xuất file định dạng Email|password thành công!`);
 }
 
 function startAutoRefresh() { if(updateInterval) clearInterval(updateInterval); updateInterval = setInterval(() => { if (currentActiveId) fetchMessages(); }, 1000); }
