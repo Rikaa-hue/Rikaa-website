@@ -109,7 +109,6 @@
   .panel h2, .nav-center-panel h2 { font-family: 'Unbounded', sans-serif; font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; margin: 0 0 18px; color: var(--text); display: flex; align-items: center; gap: 8px; }
   .panel h2 .tag, .nav-center-panel h2 .tag { font-size: 10px; padding: 2px 8px; border-radius: 20px; font-weight: 700; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(40, 240, 255, 0.3); color: #fff; box-shadow: 0 0 8px rgba(40, 240, 255, 0.2); }
 
-  /* CSS CHO KHU VỰC CHỨA 3 NÚT NẰM Ở GIỮA PHẦN 2 VÀ HỘP THƯ ĐẾN */
   .nav-center-panel {
     background: rgba(23, 19, 44, 0.4); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(139, 92, 246, 0.2); border-radius: 20px; padding: 20px; margin-bottom: 24px; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
   }
@@ -264,7 +263,7 @@
     </div>
   </div>
 
-  <!-- PHẦN 1: CẤU HÌNH ĐỊNH DANH (NÚT TẠO MAIL MỚI + XUẤT + XÓA TẤT CẢ NẰM CHUNG Ở ĐÂY) -->
+  <!-- PHẦN 1: CẤU HÌNH ĐỊNH DANH -->
   <div class="panel">
     <h2>1. Cấu hình định danh</h2>
     <div class="field">
@@ -304,7 +303,7 @@
     <div class="mail-list" id="mailList"></div>
   </div>
 
-  <!-- 🛠️ THANH ĐIỀU HƯỚNG 3 BUTTON ĐƯỢC DỜI XUỐNG GIỮA PHẦN 2 VÀ HỘP THƯ ĐẾN -->
+  <!-- 🛠️ THANH ĐIỀU HƯỚNG 3 BUTTON -->
   <div class="nav-center-panel">
     <h2>🛠️ Bảng điều khiển mở rộng & Công cụ trợ năng</h2>
     <div class="btn-row">
@@ -314,20 +313,20 @@
     </div>
   </div>
 
-  <!-- KHUNG HIỂN THỊ CỦA BỘ ĐỊNH DẠNG VĂN BẢN (FORMATTER) -->
+  <!-- KHUNG HIỂN THỊ CỦA BỘ ĐỊNH DẠNG VĂN BẢN (FORMATTER NÂNG CẤP) -->
   <div class="panel formatter-panel" id="formatterToolsPanel" style="border-color: rgba(236, 72, 153, 0.35); background: rgba(18, 10, 24, 0.85);">
-    <h2>✨ BỘ ĐỊNH DẠNG VĂN BẢN ĐẸP <span class="tag" style="border-color: var(--magenta); color: var(--magenta);">Beautiful Formatter</span></h2>
-    <p class="text-xs text-slate-400 mb-3">Dán danh sách Email dính liền hoặc văn bản lộn xộn vào đây. Hệ thống sẽ tự động dãn dòng, sắp xếp lại ngay ngắn và trình bày rõ ràng khi xuất file.</p>
+    <h2>✨ BỘ ĐỊNH DẠNG FILE THÔNG MINH <span class="tag" style="border-color: var(--magenta); color: var(--magenta);">Smart Formatter</span></h2>
+    <p class="text-xs text-slate-400 mb-3">Dán danh sách email (hoặc văn bản) vào đây. Hệ thống tự nhận diện: Nếu là Email sẽ bóc tách chuẩn form <code class="text-pink-400">1. account:... Pass:...</code>, ngược lại sẽ dàn trang văn bản rõ ràng, không rối mắt.</p>
     <div class="field">
       <div class="code-editor-container" style="height: 180px; border-color: rgba(236, 72, 153, 0.3);">
-        <textarea class="scratchpad-area" id="formatterTextarea" placeholder="Nhập hoặc tải dữ liệu danh sách email/văn bản cần dãn dòng vào đây..." spellcheck="false" style="color: #fbcfe8; font-family: sans-serif;"></textarea>
+        <textarea class="scratchpad-area" id="formatterTextarea" placeholder="Dán danh sách email hoặc văn bản hỗn hợp vào đây..." spellcheck="false" style="color: #fbcfe8; font-family: sans-serif;"></textarea>
       </div>
     </div>
     <input type="file" id="formatterFileLoader" accept="*" onchange="handleFormatterFileUpload(event)">
     <div class="btn-row">
       <button class="btn btn-upload" onclick="triggerFormatterFileInput()">📂 Tải File Lên</button>
       <button class="btn btn-export" style="min-width: 80px;" onclick="clearFormatterTextarea()">🧹 Xóa Văn Bản</button>
-      <button class="btn btn-create" style="background: linear-gradient(135deg, var(--lime), #10b981); color: #06050b;" onclick="exportFormattedTextToTxt()">💾 Tải File Về (Đã Format Đẹp)</button>
+      <button class="btn btn-create" style="background: linear-gradient(135deg, var(--lime), #10b981); color: #06050b;" onclick="exportFormattedTextToTxt()">💾 Tải File Về (Đã Format Chuẩn)</button>
     </div>
   </div>
 
@@ -674,23 +673,93 @@ function clearFormatterTextarea() {
   } 
 }
 
+// 🧠 HỆ THỐNG FORMATTER THÔNG MINH MỚI (TỰ NHẬN DIỆN EMAIL HOẶC VĂN BẢN THƯỜNG)
 function exportFormattedTextToTxt() {
   const rawText = document.getElementById('formatterTextarea').value;
   if (!rawText.trim()) { showToast("⚠️ Khung trống, không thể xuất!", true); return; }
-  let fileName = prompt("Nhập tên file định dạng xuất ra:", "danh_sach_format_dep");
+  let fileName = prompt("Nhập tên file định dạng xuất ra:", "danh_sach_format_chuan");
   if (fileName === null) return;
   fileName = fileName.trim() ? fileName.trim() : `glow_formatted_${Date.now()}`;
   if (!fileName.endsWith('.txt')) fileName += '.txt';
 
-  let lines = rawText.split(/[\n,;|\t]+/);
-  let cleanedLines = []; lines.forEach(line => { let t = line.trim(); if (t) cleanedLines.push(t); });
+  let lines = rawText.split('\n');
+  let isEmailList = false;
+  let parsedAccounts = [];
+  let normalParagraphs = [];
 
-  let structuredOutput = "=========================================\n   DANH SÁCH VĂN BẢN ĐÃ ĐƯỢC ĐỊNH DẠNG ĐẸP\n=========================================\n\n";
-  cleanedLines.forEach((item, idx) => { structuredOutput += `[${idx + 1}]  ${item}\n\n`; });
-  structuredOutput += "-----------------------------------------\n" + `Tổng số lượng: ${cleanedLines.length}\nGlow Mail Formatter Platform.`;
+  // Quét xem nội dung có chứa email hay không
+  lines.forEach(line => {
+    let trimmed = line.trim();
+    if (!trimmed) return;
+    if (trimmed.includes('@') && (trimmed.includes(':') || trimmed.includes('|') || trimmed.includes(' ') || !trimmed.includes(' '))) {
+      isEmailList = true;
+    }
+  });
+
+  let structuredOutput = "";
+
+  if (isEmailList) {
+    // Xử lý định dạng danh sách email theo yêu cầu của bé
+    lines.forEach(line => {
+      let t = line.trim();
+      if (!t) return;
+      // Tách email và password bằng các ký tự phổ biến (: | khoảng trắng tab)
+      let parts = t.split(/[:|\s\t]+/);
+      let emailFound = "";
+      let passFound = "(Trống)";
+
+      parts.forEach(p => {
+        if (p.includes('@') && !emailFound) {
+          emailFound = p;
+        } else if (!emailFound && !passFound && p) {
+          // fallback
+        } else if (emailFound && p && p !== emailFound && passFound === "(Trống)") {
+          passFound = p;
+        }
+      });
+
+      // Nếu chỉ có một chuỗi chứa @ mà không tách được pass rõ ràng
+      if (!emailFound && t.includes('@')) {
+        emailFound = t;
+      }
+
+      if (emailFound) {
+        parsedAccounts.push({ email: emailFound, pass: passFound });
+      }
+    });
+
+    if (parsedAccounts.length === 0) {
+      // Fallback nếu không tách chuẩn regex được thì giữ dòng gốc nhưng bọc theo cấu trúc
+      lines.forEach((l, idx) => {
+        if(l.trim()) parsedAccounts.push({ email: l.trim(), pass: "(Không rõ)" });
+      });
+    }
+
+    structuredOutput = "=========================================\n       DANH SÁCH TÀI KHOẢN EMAIL\n=========================================\n\n";
+    parsedAccounts.forEach((acc, idx) => {
+      structuredOutput += `${idx + 1}. account: ${acc.email}\n    Pass: ${acc.pass}\n\n`;
+    });
+    structuredOutput += "-----------------------------------------\n" + `Tổng số lượng: ${parsedAccounts.length} tài khoản\nGlow Mail Formatter Platform.`;
+
+  } else {
+    // Xử lý định dạng văn bản thường (Không bị rối mắt, dãn dòng ngay ngắn, bố cục sạch sẽ)
+    let cleanTextLines = [];
+    lines.forEach(line => {
+      let cleanLine = line.trim();
+      if (cleanLine) {
+        cleanTextLines.push(cleanLine);
+      }
+    });
+
+    structuredOutput = "=========================================\n       BẢN TRÌNH BÀY VĂN BẢN SẠCH SẼ\n=========================================\n\n";
+    cleanTextLines.forEach((para, idx) => {
+      structuredOutput += `${para}\n\n`;
+    });
+    structuredOutput += "-----------------------------------------\n" + `Trạng thái: Đã tối ưu hóa bố cục, chống rối mắt.\nGlow Mail Formatter Platform.`;
+  }
 
   const link = document.createElement("a"); link.href = URL.createObjectURL(new Blob([structuredOutput], { type: "text/plain;charset=utf-8" })); link.download = fileName; link.click();
-  showToast(`💾 Xuất thành công: ${fileName}`);
+  showToast(`💾 Đã format và xuất file thành công: ${fileName}`);
 }
 
 function playMechanicalSound(freq) {
