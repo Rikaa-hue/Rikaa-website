@@ -48,7 +48,7 @@
     --violet: #a855f7; --magenta: #ec4899; --cyan: #06b6d4; --lime: #10b981;
     --rainbow-gradient: linear-gradient(45deg, #ff0055, #ffcc00, #00ff66, #00ffff, #7f00ff, #ff0055);
   }
-  body.theme-rainbow .panel {
+  body.theme-rainbow .panel, body.theme-rainbow .nav-center-panel {
     border: 1px solid transparent;
     background-image: linear-gradient(var(--bg-panel), var(--bg-panel)), var(--rainbow-gradient);
     background-origin: border-box;
@@ -106,13 +106,17 @@
   .panel {
     background: var(--bg-panel); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid var(--line); border-radius: 20px; padding: 24px; margin-bottom: 24px; box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3); transition: transform 0.3s, box-shadow 0.3s;
   }
-  .panel h2 { font-family: 'Unbounded', sans-serif; font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; margin: 0 0 18px; color: var(--text); display: flex; align-items: center; gap: 8px; }
-  .panel h2 .tag { font-size: 10px; padding: 2px 8px; border-radius: 20px; font-weight: 700; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(40, 240, 255, 0.3); color: #fff; box-shadow: 0 0 8px rgba(40, 240, 255, 0.2); }
+  .panel h2, .nav-center-panel h2 { font-family: 'Unbounded', sans-serif; font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; margin: 0 0 18px; color: var(--text); display: flex; align-items: center; gap: 8px; }
+  .panel h2 .tag, .nav-center-panel h2 .tag { font-size: 10px; padding: 2px 8px; border-radius: 20px; font-weight: 700; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(40, 240, 255, 0.3); color: #fff; box-shadow: 0 0 8px rgba(40, 240, 255, 0.2); }
+
+  /* CSS CHO KHU VỰC CHỨA 3 NÚT NẰM Ở GIỮA PHẦN 2 VÀ HỘP THƯ ĐẾN */
+  .nav-center-panel {
+    background: rgba(23, 19, 44, 0.4); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(139, 92, 246, 0.2); border-radius: 20px; padding: 20px; margin-bottom: 24px; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+  }
 
   .field { margin-bottom: 16px; }
   .field label { display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 600; color: var(--muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
 
-  /* CSS Ô NHẬP ĐỘ DÀI TÀI KHOẢN */
   .length-number-input {
     width: 60px; height: 26px; text-align: center; background: #090712; border: 1px solid var(--line);
     border-color: rgba(139, 92, 246, 0.4); color: var(--lime); font-family: 'JetBrains Mono', monospace;
@@ -140,8 +144,8 @@
   .btn-refresh-inbox { padding: 0 20px; border-radius: 50px; border: 1px solid rgba(40, 240, 255, 0.3); background: rgba(40, 240, 255, 0.1); color: var(--cyan); font-weight: 700; font-size: 12px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: all 0.25s ease; }
   .btn-refresh-inbox:hover { background: var(--cyan); color: #000; box-shadow: 0 0 15px rgba(40, 240, 255, 0.4); transform: scale(1.05); }
 
-  .developer-panel { display: none; opacity: 0; transform: translateY(-10px); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-  .developer-panel.show { display: block; opacity: 1; transform: translateY(0); }
+  .developer-panel, .formatter-panel { display: none; opacity: 0; transform: translateY(-10px); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+  .developer-panel.show, .formatter-panel.show { display: block; opacity: 1; transform: translateY(0); }
   .language-runner-select { padding: 10px 16px; border-radius: 8px; border: 1px solid rgba(139, 92, 246, 0.3); background: #090712; color: var(--lime); font-family: 'JetBrains Mono', monospace; font-size: 13px; outline: none; width: 100%; max-width: 500px; }
   .search-code-wrapper { display: flex; gap: 8px; margin-bottom: 10px; }
   .search-code-input { flex: 1; padding: 10px 16px; border-radius: 8px; border: 1px solid rgba(139, 92, 246, 0.3); background: #090712; color: var(--cyan); font-family: 'JetBrains Mono', monospace; font-size: 12.5px; outline: none; }
@@ -151,16 +155,20 @@
   .code-editor-container { display: flex; width: 100%; height: 220px; background: #090712; border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 12px; overflow: hidden; margin-bottom: 12px; position: relative; box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8); }
   .line-numbers { width: 42px; padding: 14px 0; background: #05040a; border-right: 1px solid rgba(255, 255, 255, 0.05); color: #4b4566; font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.5; text-align: right; padding-right: 10px; user-select: none; overflow-y: hidden; white-space: pre; }
   .scratchpad-area { flex: 1; height: 100%; background: transparent; color: #a5f3fc; border: none; padding: 14px; font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.5; resize: none; outline: none; overflow-y: auto; white-space: pre; }
-  #fileLoader { display: none; }
+  #fileLoader, #formatterFileLoader { display: none; }
 
   .btn-row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 8px; }
   .btn { flex: 1; min-width: 150px; padding: 14px 20px; border: none; border-radius: 50px; font-weight: 800; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; color: #fff; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); position: relative; overflow: hidden; z-index: 1; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
   .btn-create { background: linear-gradient(135deg, var(--violet), var(--cyan), var(--magenta)); background-size: 200% auto; box-shadow: 0 4px 15px rgba(40,240,255,0.25); }
   .btn-create:hover { background-position: right center; transform: translateY(-2px) scale(1.04); box-shadow: 0 8px 25px rgba(40,240,255,0.5); }
+  
   .btn-check-custom { background: linear-gradient(135deg, #a855f7, #ec4899); box-shadow: 0 4px 15px rgba(236, 72, 153, 0.3); }
   .btn-check-custom:hover { background: linear-gradient(135deg, #ec4899, var(--cyan)); transform: translateY(-2px) scale(1.04); box-shadow: 0 8px 25px rgba(236, 72, 153, 0.5); }
   .btn-config { background: linear-gradient(135deg, #10b981, #06b6d4); box-shadow: 0 4px 15px rgba(6, 182, 212, 0.3); }
   .btn-config:hover { background: linear-gradient(135deg, #06b6d4, var(--lime)); transform: translateY(-2px) scale(1.04); color: #06050b; box-shadow: 0 8px 25px rgba(204, 255, 51, 0.5); }
+  .btn-formatter-toggle { background: linear-gradient(135deg, #3b82f6, #8b5cf6); box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3); }
+  .btn-formatter-toggle:hover { background: linear-gradient(135deg, var(--cyan), #3b82f6); transform: translateY(-2px) scale(1.04); box-shadow: 0 8px 25px rgba(40, 240, 255, 0.4); }
+
   .btn-upload { background: linear-gradient(135deg, #1d4ed8, #2563eb); }
   .btn-upload:hover { background: linear-gradient(135deg, #2563eb, var(--cyan)); transform: translateY(-2px) scale(1.04); box-shadow: 0 8px 20px rgba(37, 99, 235, 0.5); }
   .btn-export { background: var(--bg-panel-2); color: var(--text); border: 1px solid rgba(255, 255, 255, 0.15); }
@@ -256,6 +264,7 @@
     </div>
   </div>
 
+  <!-- PHẦN 1: CẤU HÌNH ĐỊNH DANH (NÚT TẠO MAIL MỚI + XUẤT + XÓA TẤT CẢ NẰM CHUNG Ở ĐÂY) -->
   <div class="panel">
     <h2>1. Cấu hình định danh</h2>
     <div class="field">
@@ -267,88 +276,62 @@
       <select class="domain-select" id="domainSelector"><option value="">Đang tải danh sách tên miền...</option></select>
     </div>
     
-    <!-- ⚠️ CẬP NHẬT GIAO DIỆN CHỖ ĐỘ DÀI: THÊM Ô NHẬP SỐ BÊN CẠNH THANH KÉO -->
     <div class="field">
       <label>
         Độ dài tên tài khoản ngẫu nhiên
-        <input type="number" id="lengthNumberInput" class="length-number-input" min="5" max="100" value="10" oninput="syncLengthInput(this.value, 'slider')">
+        <input type="number" id="lengthNumberInput" class="length-number-input" min="5" max="100" value="10" oninput="syncLengthInput(this.value, 'number_input')">
       </label>
-      <input type="range" id="lengthSlider" min="5" max="100" value="10" oninput="syncLengthInput(this.value, 'number')">
+      <input type="range" id="lengthSlider" min="5" max="100" value="10" oninput="syncLengthInput(this.value, 'slider_input')">
     </div>
 
     <div class="btn-row">
       <button class="btn btn-create btn-glow-scan" onclick="createNewMail()">⚡ Tạo Mail Mới</button>
+      <button class="btn btn-export" onclick="exportMailList()">📦 Xuất Danh Sách Mail</button>
+      <button class="btn btn-delete-all" onclick="deleteAllMails()">🗑️ Xóa Tất Cả Mail</button>
+    </div>
+  </div>
+
+  <!-- PHẦN 2: HỘP ĐỊA CHỈ ĐÃ TẠO & ĐĂNG NHẬP -->
+  <div class="panel">
+    <h2>2. Hộp địa chỉ đã tạo & Đăng nhập <span class="tag" id="mailCount">Tổng: 0</span></h2>
+    <div class="field mb-4">
+      <label>Mật khẩu của Email đang chọn</label>
+      <div class="password-input-wrapper">
+        <input type="text" class="custom-username-input" id="generatedPasswordInput" placeholder="Mật khẩu xuất hiện tại đây..." readonly>
+        <button class="btn-copy-inline" onclick="copyGeneratedPassword()">📋 Copy Pass</button>
+      </div>
+    </div>
+    <div class="mail-list" id="mailList"></div>
+  </div>
+
+  <!-- 🛠️ THANH ĐIỀU HƯỚNG 3 BUTTON ĐƯỢC DỜI XUỐNG GIỮA PHẦN 2 VÀ HỘP THƯ ĐẾN -->
+  <div class="nav-center-panel">
+    <h2>🛠️ Bảng điều khiển mở rộng & Công cụ trợ năng</h2>
+    <div class="btn-row">
       <button class="btn btn-check-custom btn-glow-scan" onclick="openCustomCheckModal()"><i class="fa-solid fa-mailbox text-xs"></i> Check Mail TM Thủ Công</button>
       <button class="btn btn-config btn-glow-scan" onclick="toggleDeveloperTools()">🛠️ Config Code</button>
-      <button class="btn btn-export" onclick="exportMailList()">📦 Xuất Mail</button>
-      <button class="btn btn-delete-all" onclick="deleteAllMails()">🗑️ Xóa Tất Cả</button>
+      <button class="btn btn-formatter-toggle btn-glow-scan" onclick="toggleFormatterTools()">✨ Bộ Định Dạng File</button>
     </div>
   </div>
 
-  <div class="modal-overlay" id="customCheckModal">
-    <div class="modal-custom-box flex flex-col">
-      <div class="border-b border-slate-800 bg-[#0b0f19]/90 px-6 py-4 flex justify-between items-center rounded-t-2xl">
-          <div class="flex items-center gap-3">
-              <div class="bg-indigo-600/20 p-2 rounded-xl border border-indigo-500/30"><i class="fa-solid fa-mailbox text-lg text-indigo-400"></i></div>
-              <div class="text-left">
-                  <h1 class="text-sm font-black tracking-wide uppercase bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Mail.tm Checker Biệt Lập</h1>
-                  <p class="text-[10px] text-slate-500">Đăng nhập & Kiểm tra hộp thư cũ độc lập</p>
-              </div>
-          </div>
-          <div class="flex items-center gap-4">
-              <div class="text-[11px] font-mono text-slate-400 flex items-center gap-2">
-                  <span id="custom-status-dot" class="w-2 h-2 rounded-full bg-slate-600"></span>
-                  <span id="custom-status-text">Chưa đăng nhập</span>
-              </div>
-              <button onclick="closeCustomCheckModal()" class="bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold py-1.5 px-3 rounded-xl transition hover:scale-105 shadow-md">ĐÓNG ✕</button>
-          </div>
+  <!-- KHUNG HIỂN THỊ CỦA BỘ ĐỊNH DẠNG VĂN BẢN (FORMATTER) -->
+  <div class="panel formatter-panel" id="formatterToolsPanel" style="border-color: rgba(236, 72, 153, 0.35); background: rgba(18, 10, 24, 0.85);">
+    <h2>✨ BỘ ĐỊNH DẠNG VĂN BẢN ĐẸP <span class="tag" style="border-color: var(--magenta); color: var(--magenta);">Beautiful Formatter</span></h2>
+    <p class="text-xs text-slate-400 mb-3">Dán danh sách Email dính liền hoặc văn bản lộn xộn vào đây. Hệ thống sẽ tự động dãn dòng, sắp xếp lại ngay ngắn và trình bày rõ ràng khi xuất file.</p>
+    <div class="field">
+      <div class="code-editor-container" style="height: 180px; border-color: rgba(236, 72, 153, 0.3);">
+        <textarea class="scratchpad-area" id="formatterTextarea" placeholder="Nhập hoặc tải dữ liệu danh sách email/văn bản cần dãn dòng vào đây..." spellcheck="false" style="color: #fbcfe8; font-family: sans-serif;"></textarea>
       </div>
-
-      <div class="p-4 md:p-6 grid grid-cols-1 lg:grid-cols-3 gap-6 items-start text-left">
-          <div class="lg:col-span-1 flex flex-col gap-4">
-              <div class="bg-[#0b0f19] border border-slate-800 rounded-2xl p-4 shadow-xl space-y-3">
-                  <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Thông Tin Tài Khoản</span>
-                  <div>
-                      <label class="text-[10px] text-slate-400">Địa chỉ Email:</label>
-                      <input type="email" id="login-email" placeholder="example@domain.com" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 mt-1 text-xs text-indigo-400 font-mono outline-none focus:border-indigo-500">
-                  </div>
-                  <div>
-                      <label class="text-[10px] text-slate-400">Mật khẩu (Password):</label>
-                      <input type="password" id="login-password" placeholder="••••••••" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 mt-1 text-xs text-slate-300 font-mono outline-none focus:border-indigo-500">
-                  </div>
-                  <button onclick="loginAndCheck()" id="login-btn" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold py-2.5 rounded-xl transition flex items-center justify-center gap-2 shadow-lg hover:scale-[1.02]">
-                      <i class="fa-solid fa-right-to-bracket"></i> ĐĂNG NHẬP & QUÉT THƯ
-                  </button>
-              </div>
-
-              <div class="bg-[#0b0f19] border border-slate-800 rounded-2xl p-4 flex flex-col h-[300px] shadow-xl">
-                  <div class="flex justify-between items-center mb-3">
-                      <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Hộp Thư Đến Riêng</span>
-                      <button onclick="fetchInbox()" id="refresh-btn" class="text-slate-500 hover:text-indigo-400 hidden transition hover:scale-110"><i class="fa-solid fa-arrows-rotate text-xs"></i></button>
-                  </div>
-                  <div id="email-list" class="flex-grow overflow-y-auto space-y-2 pr-1 text-center py-12 text-slate-600 italic text-xs">Vui lòng đăng nhập để tải hộp thư.</div>
-              </div>
-          </div>
-
-          <div class="lg:col-span-2 flex flex-col gap-4 min-h-[440px]">
-              <div id="bypass-panel" class="bg-gradient-to-r from-indigo-950/30 to-purple-950/30 border border-indigo-500/20 rounded-2xl p-4 shadow-xl hidden">
-                  <div class="flex items-center gap-2 mb-2 text-indigo-400 text-[10px] font-bold uppercase tracking-wider">
-                      <i class="fa-solid fa-wand-magic-sparkles animate-pulse"></i> Link xác minh bóc tách được:
-                  </div>
-                  <div id="extracted-links" class="flex flex-wrap gap-2"></div>
-              </div>
-
-              <div class="bg-[#0b0f19] border border-slate-800 rounded-2xl p-5 flex flex-col flex-grow shadow-xl overflow-hidden text-slate-300">
-                  <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2 block">Nội dung thư</span>
-                  <div id="email-body" class="flex-grow overflow-y-auto bg-slate-950/50 border border-slate-900 rounded-xl p-4 text-xs email-body-content select-text min-h-[250px]">
-                      <div class="text-center py-24 text-slate-600 italic">Chưa chọn thư hiển thị.</div>
-                  </div>
-              </div>
-          </div>
-      </div>
+    </div>
+    <input type="file" id="formatterFileLoader" accept="*" onchange="handleFormatterFileUpload(event)">
+    <div class="btn-row">
+      <button class="btn btn-upload" onclick="triggerFormatterFileInput()">📂 Tải File Lên</button>
+      <button class="btn btn-export" style="min-width: 80px;" onclick="clearFormatterTextarea()">🧹 Xóa Văn Bản</button>
+      <button class="btn btn-create" style="background: linear-gradient(135deg, var(--lime), #10b981); color: #06050b;" onclick="exportFormattedTextToTxt()">💾 Tải File Về (Đã Format Đẹp)</button>
     </div>
   </div>
 
+  <!-- KHUNG HIỂN THỊ CỦA DEVELOPER TOOLS -->
   <div class="panel developer-panel" id="developerToolsPanel" style="border-color: rgba(40, 240, 255, 0.25); background: rgba(12, 10, 26, 0.85);">
     <h2>🛠️ Developer Tools <span class="tag" style="border-color: var(--cyan); color: var(--cyan);">Offline Editor</span></h2>
     <div class="field" style="display: flex; gap: 15px; align-items: center; flex-wrap: wrap;">
@@ -377,18 +360,7 @@
     </div>
   </div>
 
-  <div class="panel">
-    <h2>2. Hộp địa chỉ đã tạo & Đăng nhập <span class="tag" id="mailCount">Tổng: 0</span></h2>
-    <div class="field mb-4">
-      <label>Mật khẩu của Email đang chọn</label>
-      <div class="password-input-wrapper">
-        <input type="text" class="custom-username-input" id="generatedPasswordInput" placeholder="Mật khẩu xuất hiện tại đây..." readonly>
-        <button class="btn-copy-inline" onclick="copyGeneratedPassword()">📋 Copy Pass</button>
-      </div>
-    </div>
-    <div class="mail-list" id="mailList"></div>
-  </div>
-
+  <!-- HỘP THƯ ĐẾN -->
   <div class="panel">
     <h2>3. Hộp thư đến <span class="tag">Live Inbox</span></h2>
     <div class="inbox-controls-wrapper">
@@ -400,6 +372,71 @@
       <div id="mailboxContent"><p style="text-align: center; color: var(--muted); font-size: 13px; padding-top: 40px;">Bấm chọn một địa chỉ Email phía trên để khởi động bộ nghe tín hiệu.</p></div>
     </div>
     <div class="status-bar" id="statusBar">Hệ thống sẵn sàng hoạt động...</div>
+  </div>
+</div>
+
+<!-- MODAL CỦA CHECK MAIL TM THỦ CÔNG -->
+<div class="modal-overlay" id="customCheckModal">
+  <div class="modal-custom-box flex flex-col">
+    <div class="border-b border-slate-800 bg-[#0b0f19]/90 px-6 py-4 flex justify-between items-center rounded-t-2xl">
+        <div class="flex items-center gap-3">
+            <div class="bg-indigo-600/20 p-2 rounded-xl border border-indigo-500/30"><i class="fa-solid fa-mailbox text-lg text-indigo-400"></i></div>
+            <div class="text-left">
+                <h1 class="text-sm font-black tracking-wide uppercase bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Mail.tm Checker Biệt Lập</h1>
+                <p class="text-[10px] text-slate-500">Đăng nhập & Kiểm tra hộp thư cũ độc lập</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-4">
+            <div class="text-[11px] font-mono text-slate-400 flex items-center gap-2">
+                <span id="custom-status-dot" class="w-2 h-2 rounded-full bg-slate-600"></span>
+                <span id="custom-status-text">Chưa đăng nhập</span>
+            </div>
+            <button onclick="closeCustomCheckModal()" class="bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold py-1.5 px-3 rounded-xl transition hover:scale-105 shadow-md">ĐÓNG ✕</button>
+        </div>
+    </div>
+
+    <div class="p-4 md:p-6 grid grid-cols-1 lg:grid-cols-3 gap-6 items-start text-left">
+        <div class="lg:col-span-1 flex flex-col gap-4">
+            <div class="bg-[#0b0f19] border border-slate-800 rounded-2xl p-4 shadow-xl space-y-3">
+                <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Thông Tin Tài Khoản</span>
+                <div>
+                    <label class="text-[10px] text-slate-400">Địa chỉ Email:</label>
+                    <input type="email" id="login-email" placeholder="example@domain.com" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 mt-1 text-xs text-indigo-400 font-mono outline-none focus:border-indigo-500">
+                </div>
+                <div>
+                    <label class="text-[10px] text-slate-400">Mật khẩu (Password):</label>
+                    <input type="password" id="login-password" placeholder="••••••••" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 mt-1 text-xs text-slate-300 font-mono outline-none focus:border-indigo-500">
+                </div>
+                <button onclick="loginAndCheck()" id="login-btn" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold py-2.5 rounded-xl transition flex items-center justify-center gap-2 shadow-lg hover:scale-[1.02]">
+                    <i class="fa-solid fa-right-to-bracket"></i> ĐĂNG NHẬP & QUÉT THƯ
+                </button>
+            </div>
+
+            <div class="bg-[#0b0f19] border border-slate-800 rounded-2xl p-4 flex flex-col h-[300px] shadow-xl">
+                <div class="flex justify-between items-center mb-3">
+                    <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Hộp Thư Đến Riêng</span>
+                    <button onclick="fetchInbox()" id="refresh-btn" class="text-slate-500 hover:text-indigo-400 hidden transition hover:scale-110"><i class="fa-solid fa-arrows-rotate text-xs"></i></button>
+                </div>
+                <div id="email-list" class="flex-grow overflow-y-auto space-y-2 pr-1 text-center py-12 text-slate-600 italic text-xs">Vui lòng đăng nhập để tải hộp thư.</div>
+            </div>
+        </div>
+
+        <div class="lg:col-span-2 flex flex-col gap-4 min-h-[440px]">
+            <div id="bypass-panel" class="bg-gradient-to-r from-indigo-950/30 to-purple-950/30 border border-indigo-500/20 rounded-2xl p-4 shadow-xl hidden">
+                <div class="flex items-center gap-2 mb-2 text-indigo-400 text-[10px] font-bold uppercase tracking-wider">
+                    <i class="fa-solid fa-wand-magic-sparkles animate-pulse"></i> Link xác minh bóc tách được:
+                </div>
+                <div id="extracted-links" class="flex flex-wrap gap-2"></div>
+            </div>
+
+            <div class="bg-[#0b0f19] border border-slate-800 rounded-2xl p-5 flex flex-col flex-grow shadow-xl overflow-hidden text-slate-300">
+                <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2 block">Nội dung thư</span>
+                <div id="email-body" class="flex-grow overflow-y-auto bg-slate-950/50 border border-slate-900 rounded-xl p-4 text-xs email-body-content select-text min-h-[250px]">
+                    <div class="text-center py-24 text-slate-600 italic">Chưa chọn thư hiển thị.</div>
+                </div>
+            </div>
+        </div>
+    </div>
   </div>
 </div>
 
@@ -429,6 +466,10 @@ window.onload = function() {
   const devPanel = document.getElementById('developerToolsPanel');
   if (isDevPanelOpen) { devPanel.style.display = 'block'; setTimeout(() => devPanel.classList.add('show'), 10); }
 
+  const isFormatterOpen = localStorage.getItem('formatter_panel_open_v3') === 'true';
+  const formatterPanel = document.getElementById('formatterToolsPanel');
+  if (isFormatterOpen) { formatterPanel.style.display = 'block'; setTimeout(() => formatterPanel.classList.add('show'), 10); }
+
   const savedTheme = localStorage.getItem('glow_theme_v3') || 'cyber';
   changeTheme(savedTheme);
   const savedLag = localStorage.getItem('glow_no_effects_v3') === 'true';
@@ -445,7 +486,7 @@ function changeTheme(theme) {
   if (theme === 'ocean') document.body.classList.add('theme-ocean');
   if (theme === 'rainbow') document.body.classList.add('theme-rainbow');
   localStorage.setItem('glow_theme_v3', theme);
-  showToast(`🎨 Đã chuyển sang chế độ màu: ${theme.toUpperCase()}`);
+  showToast(`🎨 Chuyển màu: ${theme.toUpperCase()}`);
 }
 
 function toggleLagReducer(forceLoad = false) {
@@ -457,13 +498,11 @@ function toggleLagReducer(forceLoad = false) {
     btn.classList.add('active-off');
     btn.innerText = "⚡ Mở Hiệu Ứng (Giảm Lag: ON)";
     localStorage.setItem('glow_no_effects_v3', 'true');
-    if (!forceLoad) showToast("📴 Đã tắt hiệu ứng chuyển động để giảm lag!");
   } else {
     document.body.classList.remove('no-effects');
     btn.classList.remove('active-off');
     btn.innerText = "⚡ Tắt Hiệu Ứng (Giảm Lag: OFF)";
     localStorage.setItem('glow_no_effects_v3', 'false');
-    if (!forceLoad) showToast("💡 Đã bật lại tất cả hiệu ứng động!");
   }
 }
 
@@ -474,8 +513,7 @@ async function loginAndCheck() {
     const email = document.getElementById('login-email').value.trim();
     const password = document.getElementById('login-password').value.trim();
     const loginBtn = document.getElementById('login-btn');
-
-    if (!email || !password) { alert("Vui lòng điền đầy đủ Email và Mật khẩu!"); return; }
+    if (!email || !password) { alert("Vui lòng điền đủ dữ liệu!"); return; }
 
     loginBtn.disabled = true;
     loginBtn.innerHTML = `<i class="fa-solid fa-circle-notch animate-spin"></i> Đang xác thực...`;
@@ -489,10 +527,8 @@ async function loginAndCheck() {
         if (!res.ok) throw new Error("Sai tài khoản hoặc mật khẩu!");
         const data = await res.json();
         authToken = data.token;
-
         updateCustomStatus("online", "Đang trực tuyến / Auto Sync");
         document.getElementById('refresh-btn').classList.remove('hidden');
-        
         fetchInbox();
         if (autoRefreshInterval) clearInterval(autoRefreshInterval);
         autoRefreshInterval = setInterval(fetchInbox, 5000);
@@ -509,7 +545,6 @@ async function fetchInbox() {
     if (!authToken) return;
     const refreshBtn = document.getElementById('refresh-btn');
     refreshBtn.classList.add('animate-spin');
-
     try {
         const res = await fetch(`${API_URL}/messages`, { headers: { 'Authorization': `Bearer ${authToken}` } });
         const data = await res.json();
@@ -539,12 +574,10 @@ async function fetchInbox() {
 async function readEmail(msgId) {
     const bodyContainer = document.getElementById('email-body');
     bodyContainer.innerHTML = `<div class="text-center py-20 text-slate-600 italic animate-pulse"><i class="fa-solid fa-spinner animate-spin mr-1"></i> Đang tải dữ liệu thư...</div>`;
-
     try {
         const res = await fetch(`${API_URL}/messages/${msgId}`, { headers: { 'Authorization': `Bearer ${authToken}` } });
         const msgData = await res.json();
         const rawContent = msgData.html ? msgData.html : `<p class="whitespace-pre-wrap">${escapeHTML(msgData.text)}</p>`;
-
         bodyContainer.innerHTML = `
             <div class="border-b border-slate-900 pb-2 mb-3 text-left">
                 <h3 class="text-xs font-bold text-slate-100">${escapeHTML(msgData.subject || 'Không tiêu đề')}</h3>
@@ -552,13 +585,11 @@ async function readEmail(msgId) {
             </div>
             <div class="leading-relaxed text-left text-slate-300">${rawContent}</div>
         `;
-
         const parser = new DOMParser(); const doc = parser.parseFromString(rawContent, 'text/html');
         const links = Array.from(doc.querySelectorAll('a'));
         const panel = document.getElementById('bypass-panel');
         const linkList = document.getElementById('extracted-links');
         linkList.innerHTML = "";
-
         const activeLinks = links.filter(a => a.href && a.href.startsWith('http'));
         if (activeLinks.length > 0) {
             panel.classList.remove('hidden');
@@ -617,6 +648,51 @@ function toggleDeveloperTools() {
   }
 }
 
+function toggleFormatterTools() {
+  const formatPanel = document.getElementById('formatterToolsPanel'); const isOpen = formatPanel.classList.contains('show');
+  playMechanicalSound(isOpen ? 440 : 880);
+  if (isOpen) {
+    formatPanel.classList.remove('show'); localStorage.setItem('formatter_panel_open_v3', 'false');
+    setTimeout(() => { if(!formatPanel.classList.contains('show')) formatPanel.style.display = 'none'; }, 400);
+  } else {
+    formatPanel.style.display = 'block'; setTimeout(() => { formatPanel.classList.add('show'); }, 10);
+    localStorage.setItem('formatter_panel_open_v3', 'true');
+  }
+}
+
+function triggerFormatterFileInput() { document.getElementById('formatterFileLoader').click(); }
+function handleFormatterFileUpload(event) {
+  const file = event.target.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) { document.getElementById('formatterTextarea').value = e.target.result; showToast(`📂 Đã nạp file văn bản!`); };
+  reader.readAsText(file);
+}
+
+function clearFormatterTextarea() { 
+  if (confirm("Xóa nội dung khung định dạng?")) { 
+    document.getElementById('formatterTextarea').value = ''; showToast("🧹 Đã dọn sạch khung văn bản!");
+  } 
+}
+
+function exportFormattedTextToTxt() {
+  const rawText = document.getElementById('formatterTextarea').value;
+  if (!rawText.trim()) { showToast("⚠️ Khung trống, không thể xuất!", true); return; }
+  let fileName = prompt("Nhập tên file định dạng xuất ra:", "danh_sach_format_dep");
+  if (fileName === null) return;
+  fileName = fileName.trim() ? fileName.trim() : `glow_formatted_${Date.now()}`;
+  if (!fileName.endsWith('.txt')) fileName += '.txt';
+
+  let lines = rawText.split(/[\n,;|\t]+/);
+  let cleanedLines = []; lines.forEach(line => { let t = line.trim(); if (t) cleanedLines.push(t); });
+
+  let structuredOutput = "=========================================\n   DANH SÁCH VĂN BẢN ĐÃ ĐƯỢC ĐỊNH DẠNG ĐẸP\n=========================================\n\n";
+  cleanedLines.forEach((item, idx) => { structuredOutput += `[${idx + 1}]  ${item}\n\n`; });
+  structuredOutput += "-----------------------------------------\n" + `Tổng số lượng: ${cleanedLines.length}\nGlow Mail Formatter Platform.`;
+
+  const link = document.createElement("a"); link.href = URL.createObjectURL(new Blob([structuredOutput], { type: "text/plain;charset=utf-8" })); link.download = fileName; link.click();
+  showToast(`💾 Xuất thành công: ${fileName}`);
+}
+
 function playMechanicalSound(freq) {
   try {
     const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); osc.type = 'triangle';
@@ -644,18 +720,12 @@ function handleFileUpload(event) {
 }
 
 function exportScratchpadToTxt() {
-  if (!scratchpad.value.trim()) {
-    showToast("⚠️ Khung soạn thảo đang trống, không có code để xuất!", true);
-    return;
-  }
-  let fileName = prompt("Nhập tên file cho đoạn code này (không cần thêm .txt):", "code_cua_toi");
-  if (fileName === null) return; 
+  if (!scratchpad.value.trim()) { showToast("⚠️ Không có code để xuất!", true); return; }
+  let fileName = prompt("Nhập tên file code:", "code_cua_toi"); if (fileName === null) return; 
   fileName = fileName.trim() ? fileName.trim() : `glow_code_export_${Date.now()}`;
   if (!fileName.endsWith('.txt')) fileName += '.txt';
-
-  const blob = new Blob([scratchpad.value], { type: "text/plain;charset=utf-8" });
-  const link = document.createElement("a"); link.href = URL.createObjectURL(blob); link.download = fileName; link.click();
-  showToast(`💾 Đã xuất thành công: ${fileName}`);
+  const link = document.createElement("a"); link.href = URL.createObjectURL(new Blob([scratchpad.value], { type: "text/plain;charset=utf-8" })); link.download = fileName; link.click();
+  showToast(`💾 Đã xuất file code!`);
 }
 
 function clearScratchpad() { if (confirm("Dọn dẹp khung soạn thảo?")) { scratchpad.value = ''; updateLineNumbers(); localStorage.removeItem('saved_scratchpad_code_v3'); } }
@@ -684,26 +754,18 @@ function runCodePreview() {
   const iframeDoc = document.getElementById('previewIframe').contentDocument; iframeDoc.open(); iframeDoc.write(scratchpad.value); iframeDoc.close();
 }
 
-/* ⚠️ HÀM ĐỒNG BỘ ĐỘ DÀI GIỮA THANH KÉO VÀ Ô NHẬP SỐ */
-function syncLengthInput(val, targetType) {
+function syncLengthInput(val, inputSource) {
   let numValue = parseInt(val) || 10;
   if (numValue < 5) numValue = 5;
   if (numValue > 100) numValue = 100;
-
-  if (targetType === 'number') {
-    document.getElementById('lengthNumberInput').value = numValue;
-  } else if (targetType === 'slider') {
-    document.getElementById('lengthSlider').value = numValue;
-  }
+  if (inputSource === 'slider_input') { document.getElementById('lengthNumberInput').value = numValue; }
+  else if (inputSource === 'number_input') { document.getElementById('lengthSlider').value = numValue; }
 }
 
-/* ⚠️ THUẬT TOÁN TẠO CHUỖI RANDOM ĐƯỢC NÂNG CẤP MẠNH - TRỘN CHỮ HOA, CHỮ THƯỜNG VÀ SỐ */
 function getRandomAlphaNumericString(length) {
   const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'; 
   let result = '';
-  for (let i = 0; i < length; i++) { 
-    result += chars.charAt(Math.floor(Math.random() * chars.length)); 
-  }
+  for (let i = 0; i < length; i++) { result += chars.charAt(Math.floor(Math.random() * chars.length)); }
   return result;
 }
 
@@ -724,22 +786,17 @@ async function createNewMail() {
   playMechanicalSound(880);
   const domain = document.getElementById('domainSelector').value; if (!domain) return;
   const customVal = document.getElementById('customUsernameInput').value.trim();
-  
-  // Lấy độ dài từ ô nhập số
   let chosenLength = parseInt(document.getElementById('lengthNumberInput').value) || 10;
   let username = customVal ? customVal.toLowerCase().replace(/[^a-z0-9]/g, '') : getRandomAlphaNumericString(chosenLength);
   if (customVal && !username) { showToast("Tên tài khoản không hợp lệ!", true); return; }
 
-  // Mail.tm yêu cầu ký tự gửi lên hệ thống API phải là chữ thường, chuỗi ngẫu nhiên mới trộn chữ hoa sẽ được chuyển sang dạng hợp lệ nhưng vẫn giữ cấu trúc cực kỳ khó trùng.
   const address = `${username.toLowerCase()}@${domain}`; const password = getRandomAlphaNumericString(12);
   try {
     const createRes = await fetch(`${API_URL}/accounts`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ address, password }) });
     if (!createRes.ok) throw new Error("Tên mail đã tồn tại!");
     const accountData = await createRes.json();
-
     const tokenRes = await fetch(`${API_URL}/token`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ address, password }) });
     const tokenData = await tokenRes.json();
-
     accountsList.push({ id: accountData.id, address, password, token: tokenData.token });
     saveToStorage(); renderMailList(); selectMail(accountData.id);
     document.getElementById('customUsernameInput').value = ''; showToast("Đã khởi tạo Email thành công!");
@@ -769,7 +826,6 @@ function selectMail(id) {
 
 function extractOTP(text) { if (!text) return null; const matches = text.match(/\b\d{4,8}\b/g); return matches ? matches[0] : null; }
 function makeLinksClickable(text) { return text ? text.replace(/(https?:\/\/[^\s]+)/g, url => `<a href="${url}" target="_blank">${url}</a>`) : ""; }
-
 function manualRefreshInbox() { if (!currentActiveId) return; playMechanicalSound(700); fetchMessages(true); }
 
 async function fetchMessages(isManual = false) {
@@ -791,7 +847,6 @@ async function fetchMessages(isManual = false) {
       const details = await detailsRes.json();
       let mailBodyText = makeLinksClickable(details.text || details.html || "");
       const otpCode = extractOTP(details.text || details.html || "") || extractOTP(msg.subject);
-
       let otpBoxHtml = otpCode ? `<div class="otp-display-box"><span>Phát hiện mã OTP: <span class="otp-number">${otpCode}</span></span><button class="btn-mini btn-copy-otp" onclick="copyText('${otpCode}', 'Đã copy: ${otpCode}')">🔑 Copy OTP</button></div>` : '';
 
       const msgItem = document.createElement('div'); msgItem.className = 'message-item';
@@ -809,20 +864,15 @@ function filterMessages() {
 }
 
 function exportMailList() {
-  if (accountsList.length === 0) {
-    showToast("⚠️ Không có Email nào trong danh sách để xuất!", true);
-    return;
-  }
-  let fileName = prompt("Nhập tên file để lưu danh sách Email (không cần thêm .txt):", "danh_sach_mail");
-  if (fileName === null) return;
+  if (accountsList.length === 0) { showToast("⚠️ Danh sách trống!", true); return; }
+  let fileName = prompt("Nhập tên file lưu Email:", "danh_sach_mail"); if (fileName === null) return;
   fileName = fileName.trim() ? fileName.trim() : `glow_mails_${Date.now()}`;
   if (!fileName.endsWith('.txt')) fileName += '.txt';
 
   let textOutput = "=== DANH SÁCH EMAIL GLOW MAIL ===\n\n"; 
   accountsList.forEach(acc => { textOutput += `Email: ${acc.address}\nPassword: ${acc.password}\n------------------------\n`; });
-  
   const link = document.createElement("a"); link.href = URL.createObjectURL(new Blob([textOutput], { type: "text/plain;" })); link.download = fileName; link.click();
-  showToast(`📦 Đã xuất thành công: ${fileName}`);
+  showToast(`📦 Xuất thành công!`);
 }
 
 function startAutoRefresh() { if(updateInterval) clearInterval(updateInterval); updateInterval = setInterval(() => { if (currentActiveId) fetchMessages(); }, 1000); }
