@@ -25,7 +25,6 @@
     --rainbow-gradient: linear-gradient(45deg, #ff2f92, #ffcc00, #2cfc03, #28f0ff, #8b5cf6, #ff2f92);
   }
 
-  /* CLASS ĐỔI THEME MÀU */
   body.theme-matrix {
     background: radial-gradient(circle 600px at 10% -10%, rgba(0, 255, 70, 0.1), transparent 80%), #020b04;
     --bg-void: #020b04; --bg-panel: rgba(5, 26, 10, 0.8); --bg-panel-2: rgba(10, 38, 16, 0.5);
@@ -61,7 +60,6 @@
 
   @keyframes rainbowBg { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
-  /* CLASS TẮT HIỆU ỨNG ĐỂ GIẢM LAG */
   body.no-effects, body.no-effects * { animation: none !important; transition: none !important; }
   body.no-effects h1, body.no-effects .dev-name { background: var(--cyan) !important; -webkit-text-fill-color: var(--text) !important; background-clip: initial !important; }
   body.no-effects .pulse-line { width: 100% !important; background: var(--violet) !important; opacity: 0.3; }
@@ -113,7 +111,14 @@
 
   .field { margin-bottom: 16px; }
   .field label { display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 600; color: var(--muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
-  .field label .val { color: var(--lime); font-family: 'JetBrains Mono', monospace; font-weight: 600; text-shadow: 0 0 6px rgba(204,255,51,0.3); }
+
+  /* CSS Ô NHẬP ĐỘ DÀI TÀI KHOẢN */
+  .length-number-input {
+    width: 60px; height: 26px; text-align: center; background: #090712; border: 1px solid var(--line);
+    border-color: rgba(139, 92, 246, 0.4); color: var(--lime); font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; font-weight: 700; border-radius: 6px; outline: none; transition: all 0.2s;
+  }
+  .length-number-input:focus { border-color: var(--cyan); box-shadow: 0 0 8px rgba(40, 240, 255, 0.3); }
 
   .custom-username-input { width: 100%; padding: 14px 18px; border-radius: 12px; border: 1px solid var(--line); background: var(--bg-panel-2); color: var(--text); font-size: 14px; outline: none; transition: all 0.25s ease; }
   .custom-username-input:focus { border-color: var(--violet); box-shadow: 0 0 14px rgba(139, 92, 246, 0.25); }
@@ -261,10 +266,16 @@
       <label>Đuôi tên miền</label>
       <select class="domain-select" id="domainSelector"><option value="">Đang tải danh sách tên miền...</option></select>
     </div>
+    
+    <!-- ⚠️ CẬP NHẬT GIAO DIỆN CHỖ ĐỘ DÀI: THÊM Ô NHẬP SỐ BÊN CẠNH THANH KÉO -->
     <div class="field">
-      <label>Độ dài tên tài khoản ngẫu nhiên <span class="val" id="lengthDisplay">10</span></label>
-      <input type="range" id="lengthSlider" min="5" max="100" value="10" oninput="document.getElementById('lengthDisplay').innerText = this.value">
+      <label>
+        Độ dài tên tài khoản ngẫu nhiên
+        <input type="number" id="lengthNumberInput" class="length-number-input" min="5" max="100" value="10" oninput="syncLengthInput(this.value, 'slider')">
+      </label>
+      <input type="range" id="lengthSlider" min="5" max="100" value="10" oninput="syncLengthInput(this.value, 'number')">
     </div>
+
     <div class="btn-row">
       <button class="btn btn-create btn-glow-scan" onclick="createNewMail()">⚡ Tạo Mail Mới</button>
       <button class="btn btn-check-custom btn-glow-scan" onclick="openCustomCheckModal()"><i class="fa-solid fa-mailbox text-xs"></i> Check Mail TM Thủ Công</button>
@@ -632,7 +643,6 @@ function handleFileUpload(event) {
   reader.readAsText(file);
 }
 
-/* ⚠️ HÀM XUẤT CODE ĐƯỢC CẬP NHẬT TÍNH NĂNG KIỂM TRA & ĐẶT TÊN */
 function exportScratchpadToTxt() {
   if (!scratchpad.value.trim()) {
     showToast("⚠️ Khung soạn thảo đang trống, không có code để xuất!", true);
@@ -674,9 +684,26 @@ function runCodePreview() {
   const iframeDoc = document.getElementById('previewIframe').contentDocument; iframeDoc.open(); iframeDoc.write(scratchpad.value); iframeDoc.close();
 }
 
+/* ⚠️ HÀM ĐỒNG BỘ ĐỘ DÀI GIỮA THANH KÉO VÀ Ô NHẬP SỐ */
+function syncLengthInput(val, targetType) {
+  let numValue = parseInt(val) || 10;
+  if (numValue < 5) numValue = 5;
+  if (numValue > 100) numValue = 100;
+
+  if (targetType === 'number') {
+    document.getElementById('lengthNumberInput').value = numValue;
+  } else if (targetType === 'slider') {
+    document.getElementById('lengthSlider').value = numValue;
+  }
+}
+
+/* ⚠️ THUẬT TOÁN TẠO CHUỖI RANDOM ĐƯỢC NÂNG CẤP MẠNH - TRỘN CHỮ HOA, CHỮ THƯỜNG VÀ SỐ */
 function getRandomAlphaNumericString(length) {
-  const chars = 'abcdefghijklmnopqrstuvwxyz0123456789'; let result = '';
-  for (let i = 0; i < length; i++) { result += chars.charAt(Math.floor(Math.random() * chars.length)); }
+  const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'; 
+  let result = '';
+  for (let i = 0; i < length; i++) { 
+    result += chars.charAt(Math.floor(Math.random() * chars.length)); 
+  }
   return result;
 }
 
@@ -697,10 +724,14 @@ async function createNewMail() {
   playMechanicalSound(880);
   const domain = document.getElementById('domainSelector').value; if (!domain) return;
   const customVal = document.getElementById('customUsernameInput').value.trim();
-  let username = customVal ? customVal.toLowerCase().replace(/[^a-z0-9]/g, '') : getRandomAlphaNumericString(parseInt(document.getElementById('lengthSlider').value) || 10);
+  
+  // Lấy độ dài từ ô nhập số
+  let chosenLength = parseInt(document.getElementById('lengthNumberInput').value) || 10;
+  let username = customVal ? customVal.toLowerCase().replace(/[^a-z0-9]/g, '') : getRandomAlphaNumericString(chosenLength);
   if (customVal && !username) { showToast("Tên tài khoản không hợp lệ!", true); return; }
 
-  const address = `${username}@${domain}`; const password = getRandomAlphaNumericString(12);
+  // Mail.tm yêu cầu ký tự gửi lên hệ thống API phải là chữ thường, chuỗi ngẫu nhiên mới trộn chữ hoa sẽ được chuyển sang dạng hợp lệ nhưng vẫn giữ cấu trúc cực kỳ khó trùng.
+  const address = `${username.toLowerCase()}@${domain}`; const password = getRandomAlphaNumericString(12);
   try {
     const createRes = await fetch(`${API_URL}/accounts`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ address, password }) });
     if (!createRes.ok) throw new Error("Tên mail đã tồn tại!");
@@ -777,7 +808,6 @@ function filterMessages() {
   for (let item of items) { item.style.display = item.innerText.toLowerCase().includes(query) ? 'block' : 'none'; }
 }
 
-/* ⚠️ HÀM XUẤT EMAIL ĐƯỢC CẬP NHẬT TÍNH NĂNG KIỂM TRA & ĐẶT TÊN */
 function exportMailList() {
   if (accountsList.length === 0) {
     showToast("⚠️ Không có Email nào trong danh sách để xuất!", true);
