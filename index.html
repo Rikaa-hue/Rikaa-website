@@ -38,7 +38,6 @@
     --violet: #00f0ff; --magenta: #3b82f6; --cyan: #60a5fa; --lime: #00f5d4; --text: #f1f5f9; --muted: #64748b;
     --rainbow-gradient: linear-gradient(45deg, #00f0ff, #3b82f6, #00f5d4, #00f0ff);
   }
-  /* THEME CẦU VỒNG SIÊU HIỆU ỨNG CỦA BÉ NÈ */
   body.theme-rainbow {
     background: linear-gradient(125deg, #0f051d, #140717, #05141a, #0c1a05, #170710);
     background-size: 400% 400%;
@@ -60,9 +59,7 @@
     box-shadow: 0 10px 30px rgba(168, 85, 247, 0.15);
   }
 
-  @keyframes rainbowBg {
-    0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; }
-  }
+  @keyframes rainbowBg { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
   /* CLASS TẮT HIỆU ỨNG ĐỂ GIẢM LAG */
   body.no-effects, body.no-effects * { animation: none !important; transition: none !important; }
@@ -95,75 +92,47 @@
     filter: drop-shadow(0 2px 15px rgba(40, 240, 255, 0.4)) drop-shadow(0 4px 40px rgba(255, 47, 146, 0.25));
   }
 
-  .dev-signature {
-    font-family: 'Unbounded', sans-serif; font-size: 14px; font-weight: 700; margin: 12px 0 16px; color: var(--muted);
-    display: flex; align-items: center; gap: 6px;
-  }
+  .dev-signature { font-family: 'Unbounded', sans-serif; font-size: 14px; font-weight: 700; margin: 12px 0 16px; color: var(--muted); display: flex; align-items: center; gap: 6px; }
   .dev-name {
     background: var(--rainbow-gradient); background-size: 300% auto; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
     animation: rainbowGlow 4s linear infinite; font-weight: 900; font-size: 16px; letter-spacing: 0.5px;
     filter: drop-shadow(0 0 8px rgba(40, 240, 255, 0.6)) drop-shadow(0 0 15px rgba(255, 47, 146, 0.4));
   }
 
-  @keyframes rainbowGlow {
-    0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; }
-  }
+  @keyframes rainbowGlow { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
-  .pulse-track {
-    margin-top: 22px; display: flex; align-items: center; height: 3px; position: relative; background: rgba(255, 255, 255, 0.03); border-radius: 10px; overflow: hidden;
-  }
-  .pulse-line { 
-    position: absolute; left: 0; top: 0; height: 100%; width: 30%; background: linear-gradient(90deg, transparent, var(--cyan), var(--magenta), transparent); animation: pulseTravel 2.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-  }
+  .pulse-track { margin-top: 22px; display: flex; align-items: center; height: 3px; position: relative; background: rgba(255, 255, 255, 0.03); border-radius: 10px; overflow: hidden; }
+  .pulse-line { position: absolute; left: 0; top: 0; height: 100%; width: 30%; background: linear-gradient(90deg, transparent, var(--cyan), var(--magenta), transparent); animation: pulseTravel 2.5s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
   @keyframes pulseTravel { 0% { transform: translateX(-150%); } 100% { transform: translateX(350%); } }
 
   .panel {
-    background: var(--bg-panel); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid var(--line); border-radius: 20px; padding: 24px; margin-bottom: 24px; box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
-    transition: transform 0.3s, box-shadow 0.3s;
+    background: var(--bg-panel); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid var(--line); border-radius: 20px; padding: 24px; margin-bottom: 24px; box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3); transition: transform 0.3s, box-shadow 0.3s;
   }
-  .panel h2 {
-    font-family: 'Unbounded', sans-serif; font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; margin: 0 0 18px; color: var(--text); display: flex; align-items: center; gap: 8px;
-  }
-  .panel h2 .tag { 
-    font-size: 10px; padding: 2px 8px; border-radius: 20px; font-weight: 700; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(40, 240, 255, 0.3); color: #fff; box-shadow: 0 0 8px rgba(40, 240, 255, 0.2);
-  }
+  .panel h2 { font-family: 'Unbounded', sans-serif; font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; margin: 0 0 18px; color: var(--text); display: flex; align-items: center; gap: 8px; }
+  .panel h2 .tag { font-size: 10px; padding: 2px 8px; border-radius: 20px; font-weight: 700; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(40, 240, 255, 0.3); color: #fff; box-shadow: 0 0 8px rgba(40, 240, 255, 0.2); }
 
   .field { margin-bottom: 16px; }
   .field label { display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 600; color: var(--muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
   .field label .val { color: var(--lime); font-family: 'JetBrains Mono', monospace; font-weight: 600; text-shadow: 0 0 6px rgba(204,255,51,0.3); }
 
-  .custom-username-input {
-    width: 100%; padding: 14px 18px; border-radius: 12px; border: 1px solid var(--line); background: var(--bg-panel-2); color: var(--text); font-size: 14px; outline: none; transition: all 0.25s ease;
-  }
+  .custom-username-input { width: 100%; padding: 14px 18px; border-radius: 12px; border: 1px solid var(--line); background: var(--bg-panel-2); color: var(--text); font-size: 14px; outline: none; transition: all 0.25s ease; }
   .custom-username-input:focus { border-color: var(--violet); box-shadow: 0 0 14px rgba(139, 92, 246, 0.25); }
-
   .password-input-wrapper { position: relative; display: flex; align-items: center; }
   .password-input-wrapper .custom-username-input { padding-right: 90px; font-family: 'JetBrains Mono', monospace; color: var(--lime); }
   
-  /* ANIMATION CHO TẤT CẢ CÁC LOẠI BUTTON */
-  .btn-copy-inline {
-    position: absolute; right: 8px; padding: 6px 12px; background: rgba(40, 240, 255, 0.15); border: 1px solid rgba(40, 240, 255, 0.3); color: var(--cyan); border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  }
+  .btn-copy-inline { position: absolute; right: 8px; padding: 6px 12px; background: rgba(40, 240, 255, 0.15); border: 1px solid rgba(40, 240, 255, 0.3); color: var(--cyan); border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); }
   .btn-copy-inline:hover { background: var(--cyan); color: #000; transform: scale(1.05); box-shadow: 0 0 12px var(--cyan); }
 
   .domain-select {
     width: 100%; padding: 14px 18px; border-radius: 12px; border: 1px solid var(--line); background: var(--bg-panel-2); color: var(--text); font-family: 'JetBrains Mono', monospace; font-size: 14px; outline: none; cursor: pointer; appearance: none; -webkit-appearance: none;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23837a9f' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'></polyline></svg>");
-    background-repeat: no-repeat; background-position: right 16px center; background-size: 16px;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23837a9f' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'></polyline></svg>"); background-repeat: no-repeat; background-position: right 16px center; background-size: 16px;
   }
-
   input[type=range] { -webkit-appearance: none; width: 100%; height: 5px; border-radius: 4px; background: linear-gradient(90deg, var(--violet), var(--magenta), var(--lime)); outline: none; }
   input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%; background: #fff; cursor: pointer; box-shadow: 0 0 10px rgba(139, 92, 246, 0.8); }
 
-  .fields-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-  @media (max-width: 650px) { .fields-grid-2 { grid-template-columns: 1fr; } }
-
   .inbox-controls-wrapper { display: flex; gap: 12px; margin-bottom: 14px; }
   .search-box { flex: 1; padding: 12px 18px; border-radius: 50px; border: 1px solid var(--line); background: var(--bg-panel-2); color: var(--text); font-size: 13.5px; outline: none; }
-
-  .btn-refresh-inbox {
-    padding: 0 20px; border-radius: 50px; border: 1px solid rgba(40, 240, 255, 0.3); background: rgba(40, 240, 255, 0.1); color: var(--cyan); font-weight: 700; font-size: 12px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: all 0.25s ease;
-  }
+  .btn-refresh-inbox { padding: 0 20px; border-radius: 50px; border: 1px solid rgba(40, 240, 255, 0.3); background: rgba(40, 240, 255, 0.1); color: var(--cyan); font-weight: 700; font-size: 12px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: all 0.25s ease; }
   .btn-refresh-inbox:hover { background: var(--cyan); color: #000; box-shadow: 0 0 15px rgba(40, 240, 255, 0.4); transform: scale(1.05); }
 
   .developer-panel { display: none; opacity: 0; transform: translateY(-10px); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
@@ -171,7 +140,6 @@
   .language-runner-select { padding: 10px 16px; border-radius: 8px; border: 1px solid rgba(139, 92, 246, 0.3); background: #090712; color: var(--lime); font-family: 'JetBrains Mono', monospace; font-size: 13px; outline: none; width: 100%; max-width: 500px; }
   .search-code-wrapper { display: flex; gap: 8px; margin-bottom: 10px; }
   .search-code-input { flex: 1; padding: 10px 16px; border-radius: 8px; border: 1px solid rgba(139, 92, 246, 0.3); background: #090712; color: var(--cyan); font-family: 'JetBrains Mono', monospace; font-size: 12.5px; outline: none; }
-  
   .btn-search-nav { padding: 0 16px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.1); background: var(--bg-panel-2); color: var(--text); cursor: pointer; font-weight: 600; font-size: 12px; display: flex; align-items: center; justify-content: center; transition: all 0.25s; }
   .btn-search-nav:hover { background: var(--violet); color: #fff; transform: translateY(-1px); box-shadow: 0 4px 10px rgba(139, 92, 246, 0.4); }
 
@@ -181,10 +149,7 @@
   #fileLoader { display: none; }
 
   .btn-row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 8px; }
-  .btn {
-    flex: 1; min-width: 150px; padding: 14px 20px; border: none; border-radius: 50px; font-weight: 800; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; color: #fff; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    position: relative; overflow: hidden; z-index: 1; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-  }
+  .btn { flex: 1; min-width: 150px; padding: 14px 20px; border: none; border-radius: 50px; font-weight: 800; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; color: #fff; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); position: relative; overflow: hidden; z-index: 1; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
   .btn-create { background: linear-gradient(135deg, var(--violet), var(--cyan), var(--magenta)); background-size: 200% auto; box-shadow: 0 4px 15px rgba(40,240,255,0.25); }
   .btn-create:hover { background-position: right center; transform: translateY(-2px) scale(1.04); box-shadow: 0 8px 25px rgba(40,240,255,0.5); }
   .btn-check-custom { background: linear-gradient(135deg, #a855f7, #ec4899); box-shadow: 0 4px 15px rgba(236, 72, 153, 0.3); }
@@ -200,16 +165,13 @@
   .btn-glow-scan::after { content: ''; position: absolute; top: -50%; left: -60%; width: 30%; height: 200%; background: rgba(255, 255, 255, 0.35); transform: rotate(30deg); animation: lightShine 3s infinite ease-in-out; z-index: 2; pointer-events: none; }
   @keyframes lightShine { 0% { left: -60%; } 40% { left: 140%; } 100% { left: 140%; } }
 
-  /* HIỆU ỨNG CHO CÁC NÚT NHỎ (MINI BUTTONS) */
   .btn-mini { padding: 6px 12px; font-size: 11px; min-width: auto; border-radius: 8px; font-weight: 700; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); white-space: nowrap; }
   .btn-copy { background: rgba(40, 240, 255, 0.1); color: var(--cyan); border: 1px solid rgba(40, 240, 255, 0.3); }
   .btn-copy:hover { background: var(--cyan); color: #000; transform: scale(1.1); box-shadow: 0 0 12px var(--cyan); }
   .btn-delete { background: rgba(255, 47, 146, 0.1); color: var(--magenta); border: 1px solid rgba(255, 47, 146, 0.3); }
   .btn-delete:hover { background: var(--magenta); color: #fff; transform: scale(1.1); box-shadow: 0 0 12px var(--magenta); }
   
-  .btn-copy-otp {
-    background: linear-gradient(135deg, var(--lime), #7cff9e); color: #0a0912; font-weight: 800; border: none; animation: pulseGlow 2s infinite alternate;
-  }
+  .btn-copy-otp { background: linear-gradient(135deg, var(--lime), #7cff9e); color: #0a0912; font-weight: 800; border: none; animation: pulseGlow 2s infinite alternate; }
   .btn-copy-otp:hover { transform: scale(1.08) !important; box-shadow: 0 0 18px var(--lime) !important; }
   @keyframes pulseGlow { 0% { transform: scale(1); box-shadow: 0 0 8px rgba(204,255,51,0.4); } 100% { transform: scale(1.03); box-shadow: 0 0 22px rgba(204,255,51,0.7); } }
 
@@ -240,18 +202,12 @@
   .message-body { background: #090712; padding: 16px; border-radius: 10px; color: #d1cde6; font-size: 13.5px; line-height: 1.6; white-space: pre-wrap; border: 1px solid rgba(255,255,255,0.02); word-break: break-word; overflow-x: auto; }
   .message-body a { color: var(--cyan); text-decoration: underline; font-weight: 600; }
 
-  .modal-overlay {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(4, 3, 8, 0.88); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-    z-index: 11000; display: none; align-items: center; justify-content: center; padding: 16px;
-  }
-  .modal-custom-box {
-    background: #050814; border: 1px solid #1e293b; border-radius: 24px; width: 100%; max-width: 1100px; max-height: 90vh; overflow-y: auto; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
-  }
+  .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(4, 3, 8, 0.88); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); z-index: 11000; display: none; align-items: center; justify-content: center; padding: 16px; }
+  .modal-custom-box { background: #050814; border: 1px solid #1e293b; border-radius: 24px; width: 100%; max-width: 1100px; max-height: 90vh; overflow-y: auto; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); }
 
   .toast { position: fixed; bottom: 24px; right: 24px; background: var(--lime); color: #0a0912; padding: 12px 24px; border-radius: 50px; font-weight: 700; font-size: 13px; display: none; z-index: 99999; box-shadow: 0 8px 30px rgba(0,0,0,0.4); }
   .status-bar { text-align: center; font-size: 11px; font-family: 'JetBrains Mono', monospace; color: var(--muted); margin-top: 14px; }
 
-  /* STYLE KHU VỰC ĐIỀU KHIỂN THEME MỚI & HOVER CHO THEM BUTTONS */
   .theme-btn { padding: 8px 16px; font-size: 11px; font-weight: 800; text-transform: uppercase; border-radius: 10px; border: 1px solid var(--line); color: #fff; cursor: pointer; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); }
   .theme-btn:hover { transform: translateY(-2px) scale(1.05); box-shadow: 0 6px 15px rgba(255, 255, 255, 0.15); }
   .btn-toggle-lag { background: rgba(255, 47, 146, 0.2); border-color: #ff2f92; color: #ff2f92; }
@@ -282,7 +238,6 @@
     <div class="pulse-track"><div class="pulse-line"></div></div>
   </header>
 
-  <!-- BẢNG ĐIỀU KHIỂN HIỆU ỨNG & MÀU SẮC ĐÃ THÊM BUTTON CẦU VỒNG -->
   <div class="panel mt-6" style="border-color: rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.02); padding: 16px;">
     <h2 style="margin-bottom: 12px;"><i class="fa-solid fa-palette text-xs"></i> Bảng điều khiển hiệu ứng & màu sắc</h2>
     <div class="flex flex-wrap gap-3 justify-between items-center">
@@ -290,14 +245,12 @@
         <button class="theme-btn" style="background: linear-gradient(135deg, #8b5cf6, #ff2f92);" onclick="changeTheme('cyber')">🎨 Neon Cyber</button>
         <button class="theme-btn" style="background: linear-gradient(135deg, #00ff46, #052a0a); border-color:#00ff46;" onclick="changeTheme('matrix')">📟 Matrix Green</button>
         <button class="theme-btn" style="background: linear-gradient(135deg, #00f0ff, #0a192f); border-color:#00f0ff;" onclick="changeTheme('ocean')">🌊 Deep Ocean</button>
-        <!-- BUTTON THEME MỚI -->
         <button class="theme-btn" style="background: linear-gradient(45deg, #ff0055, #00ffff); border-color:#fff;" onclick="changeTheme('rainbow')">🌈 Rainbow Glow</button>
       </div>
       <button class="theme-btn btn-toggle-lag" id="lagToggleBtn" onclick="toggleLagReducer()">⚡ Tắt Hiệu Ứng (Giảm Lag: OFF)</button>
     </div>
   </div>
 
-  <!-- KHUNG 1: CẤU HÌNH TẠO MAIL MỚI -->
   <div class="panel">
     <h2>1. Cấu hình định danh</h2>
     <div class="field">
@@ -321,7 +274,6 @@
     </div>
   </div>
 
-  <!-- KHUNG MODAL CHECK CHUYÊN BIỆT -->
   <div class="modal-overlay" id="customCheckModal">
     <div class="modal-custom-box flex flex-col">
       <div class="border-b border-slate-800 bg-[#0b0f19]/90 px-6 py-4 flex justify-between items-center rounded-t-2xl">
@@ -386,7 +338,6 @@
     </div>
   </div>
 
-  <!-- KHUNG DEVELOPER TOOLS -->
   <div class="panel developer-panel" id="developerToolsPanel" style="border-color: rgba(40, 240, 255, 0.25); background: rgba(12, 10, 26, 0.85);">
     <h2>🛠️ Developer Tools <span class="tag" style="border-color: var(--cyan); color: var(--cyan);">Offline Editor</span></h2>
     <div class="field" style="display: flex; gap: 15px; align-items: center; flex-wrap: wrap;">
@@ -415,7 +366,6 @@
     </div>
   </div>
 
-  <!-- KHUNG DANH SÁCH MAIL CHÍNH -->
   <div class="panel">
     <h2>2. Hộp địa chỉ đã tạo & Đăng nhập <span class="tag" id="mailCount">Tổng: 0</span></h2>
     <div class="field mb-4">
@@ -428,7 +378,6 @@
     <div class="mail-list" id="mailList"></div>
   </div>
 
-  <!-- KHUNG HỘP THƯ ĐẾN CHÍNH -->
   <div class="panel">
     <h2>3. Hộp thư đến <span class="tag">Live Inbox</span></h2>
     <div class="inbox-controls-wrapper">
@@ -479,7 +428,6 @@ window.onload = function() {
   startAutoRefresh();
 };
 
-/* HÀM ĐỔI THEME MÀU TÍCH HỢP CẦU VỒNG */
 function changeTheme(theme) {
   document.body.classList.remove('theme-matrix', 'theme-ocean', 'theme-rainbow');
   if (theme === 'matrix') document.body.classList.add('theme-matrix');
@@ -489,13 +437,10 @@ function changeTheme(theme) {
   showToast(`🎨 Đã chuyển sang chế độ màu: ${theme.toUpperCase()}`);
 }
 
-/* HÀM GIẢM LAG */
 function toggleLagReducer(forceLoad = false) {
   const btn = document.getElementById('lagToggleBtn');
   let isNoEffects = document.body.classList.contains('no-effects');
-  
   if (forceLoad) { isNoEffects = false; }
-
   if (!isNoEffects) {
     document.body.classList.add('no-effects');
     btn.classList.add('active-off');
@@ -569,16 +514,11 @@ async function fetchInbox() {
             messages.forEach(msg => {
                 const unreadStyle = msg.seen ? "opacity-60" : "border-l-4 border-indigo-500 font-bold bg-slate-900";
                 const time = new Date(msg.createdAt).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
-                
                 listContainer.innerHTML += `
                     <div onclick="readEmail('${msg.id}')" class="p-2.5 rounded-xl bg-slate-950/60 border border-slate-900 cursor-pointer hover:border-slate-700/60 transition flex flex-col gap-0.5 text-[11px] ${unreadStyle}">
-                        <div class="flex justify-between items-center text-[10px] text-indigo-400">
-                            <span class="truncate max-w-[130px]">${escapeHTML(msg.from.address)}</span>
-                            <span class="text-slate-500 font-mono">${time}</span>
-                        </div>
+                        <div class="flex justify-between items-center text-[10px] text-indigo-400"><span class="truncate max-w-[130px]">${escapeHTML(msg.from.address)}</span><span class="text-slate-500 font-mono">${time}</span></div>
                         <div class="text-slate-200 truncate">${escapeHTML(msg.subject || 'Không tiêu đề')}</div>
-                    </div>
-                `;
+                    </div>`;
             });
         }
     } catch (err) { console.error(err); }
@@ -692,9 +632,20 @@ function handleFileUpload(event) {
   reader.readAsText(file);
 }
 
+/* ⚠️ HÀM XUẤT CODE ĐƯỢC CẬP NHẬT TÍNH NĂNG KIỂM TRA & ĐẶT TÊN */
 function exportScratchpadToTxt() {
+  if (!scratchpad.value.trim()) {
+    showToast("⚠️ Khung soạn thảo đang trống, không có code để xuất!", true);
+    return;
+  }
+  let fileName = prompt("Nhập tên file cho đoạn code này (không cần thêm .txt):", "code_cua_toi");
+  if (fileName === null) return; 
+  fileName = fileName.trim() ? fileName.trim() : `glow_code_export_${Date.now()}`;
+  if (!fileName.endsWith('.txt')) fileName += '.txt';
+
   const blob = new Blob([scratchpad.value], { type: "text/plain;charset=utf-8" });
-  const link = document.createElement("a"); link.href = URL.createObjectURL(blob); link.download = `glow_code_export_${new Date().getTime()}.txt`; link.click();
+  const link = document.createElement("a"); link.href = URL.createObjectURL(blob); link.download = fileName; link.click();
+  showToast(`💾 Đã xuất thành công: ${fileName}`);
 }
 
 function clearScratchpad() { if (confirm("Dọn dẹp khung soạn thảo?")) { scratchpad.value = ''; updateLineNumbers(); localStorage.removeItem('saved_scratchpad_code_v3'); } }
@@ -826,9 +777,22 @@ function filterMessages() {
   for (let item of items) { item.style.display = item.innerText.toLowerCase().includes(query) ? 'block' : 'none'; }
 }
 
+/* ⚠️ HÀM XUẤT EMAIL ĐƯỢC CẬP NHẬT TÍNH NĂNG KIỂM TRA & ĐẶT TÊN */
 function exportMailList() {
-  let textOutput = ""; accountsList.forEach(acc => { textOutput += `${acc.address}|${acc.password}\n`; });
-  const link = document.createElement("a"); link.href = URL.createObjectURL(new Blob([textOutput], { type: "text/plain;" })); link.download = `glow_mails_${Date.now()}.txt`; link.click();
+  if (accountsList.length === 0) {
+    showToast("⚠️ Không có Email nào trong danh sách để xuất!", true);
+    return;
+  }
+  let fileName = prompt("Nhập tên file để lưu danh sách Email (không cần thêm .txt):", "danh_sach_mail");
+  if (fileName === null) return;
+  fileName = fileName.trim() ? fileName.trim() : `glow_mails_${Date.now()}`;
+  if (!fileName.endsWith('.txt')) fileName += '.txt';
+
+  let textOutput = "=== DANH SÁCH EMAIL GLOW MAIL ===\n\n"; 
+  accountsList.forEach(acc => { textOutput += `Email: ${acc.address}\nPassword: ${acc.password}\n------------------------\n`; });
+  
+  const link = document.createElement("a"); link.href = URL.createObjectURL(new Blob([textOutput], { type: "text/plain;" })); link.download = fileName; link.click();
+  showToast(`📦 Đã xuất thành công: ${fileName}`);
 }
 
 function startAutoRefresh() { if(updateInterval) clearInterval(updateInterval); updateInterval = setInterval(() => { if (currentActiveId) fetchMessages(); }, 1000); }
