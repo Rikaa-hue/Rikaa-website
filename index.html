@@ -505,7 +505,6 @@ function toggleLagReducer(forceLoad = false) {
   }
 }
 
-// 🔄 ĐỒNG BỘ DỮ LIỆU EMAIL ĐANG CHỌN VÀO MODAL THỦ CÔNG
 function openCustomCheckModal() { 
   playMechanicalSound(500); 
   const currentAcc = accountsList.find(acc => acc.id === currentActiveId);
@@ -831,10 +830,13 @@ function syncLengthInput(val, inputSource) {
   else if (inputSource === 'number_input') { document.getElementById('lengthSlider').value = numValue; }
 }
 
+// 🔤 BỘ TẠO CHUỖI NGẪU NHIÊN CHUẨN CẢ CHỮ HOA, CHỮ THƯỜNG VÀ SỐ
 function getRandomAlphaNumericString(length) {
   const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'; 
   let result = '';
-  for (let i = 0; i < length; i++) { result += chars.charAt(Math.floor(Math.random() * chars.length)); }
+  for (let i = 0; i < length; i++) { 
+    result += chars.charAt(Math.floor(Math.random() * chars.length)); 
+  }
   return result;
 }
 
@@ -851,15 +853,18 @@ async function loadAvailableDomains() {
 
 function copyGeneratedPassword() { const passVal = document.getElementById('generatedPasswordInput').value; if (!passVal) return; copyText(passVal, "📋 Đã sao chép mật khẩu Email!"); }
 
+// ⚡ TẠO MAIL MỚI GIỮ NGUYÊN VIẾT HOA VÀ SỐ
 async function createNewMail() {
   playMechanicalSound(880);
   const domain = document.getElementById('domainSelector').value; if (!domain) return;
   const customVal = document.getElementById('customUsernameInput').value.trim();
   let chosenLength = parseInt(document.getElementById('lengthNumberInput').value) || 10;
-  let username = customVal ? customVal.toLowerCase().replace(/[^a-z0-9]/g, '') : getRandomAlphaNumericString(chosenLength);
+  
+  // Giữ nguyên chữ HOA, chữ thường và số
+  let username = customVal ? customVal.replace(/[^a-zA-Z0-9]/g, '') : getRandomAlphaNumericString(chosenLength);
   if (customVal && !username) { showToast("Tên tài khoản không hợp lệ!", true); return; }
 
-  const address = `${username.toLowerCase()}@${domain}`; const password = getRandomAlphaNumericString(12);
+  const address = `${username}@${domain}`; const password = getRandomAlphaNumericString(12);
   try {
     const createRes = await fetch(`${API_URL}/accounts`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ address, password }) });
     if (!createRes.ok) throw new Error("Tên mail đã tồn tại!");
