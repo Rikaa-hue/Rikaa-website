@@ -263,7 +263,7 @@
     </div>
   </div>
 
-  <!-- PHẦN 1: CẤU HÌNH ĐỊNH DANH (NÚT TẠO MAIL + XUẤT + XÓA TẤT CẢ NẰM CHUNG) -->
+  <!-- PHẦN 1: CẤU HÌNH ĐỊNH DANH -->
   <div class="panel">
     <h2>1. Cấu hình định danh</h2>
     <div class="field">
@@ -303,7 +303,7 @@
     <div class="mail-list" id="mailList"></div>
   </div>
 
-  <!-- 🛠️ THANH ĐIỀU HƯỚNG 3 BUTTON ĐƯỢC DỜI Ở GIỮA PHẦN 2 VÀ HỘP THƯ ĐẾN -->
+  <!-- 🛠️ THANH ĐIỀU HƯỚNG 3 BUTTON -->
   <div class="nav-center-panel">
     <h2>🛠️ Bảng điều khiển mở rộng & Công cụ trợ năng</h2>
     <div class="btn-row">
@@ -313,7 +313,7 @@
     </div>
   </div>
 
-  <!-- KHUNG HIỂN THỊ CỦA BỘ ĐỊNH DẠNG VĂN BẢN (FORMATTER NÂNG CẤP) -->
+  <!-- BỘ ĐỊNH DẠNG FILE THÔNG MINH -->
   <div class="panel formatter-panel" id="formatterToolsPanel" style="border-color: rgba(236, 72, 153, 0.35); background: rgba(18, 10, 24, 0.85);">
     <h2>✨ BỘ ĐỊNH DẠNG FILE THÔNG MINH <span class="tag" style="border-color: var(--magenta); color: var(--magenta);">Smart Formatter</span></h2>
     <p class="text-xs text-slate-400 mb-3">Dán danh sách email hoặc văn bản vào đây. Hệ thống tự nhận diện: Nếu là Email sẽ bóc tách chuẩn form <code class="text-pink-400">1. account:... Pass:...</code>, ngược lại sẽ dàn trang văn bản rõ ràng, không rối mắt.</p>
@@ -330,7 +330,7 @@
     </div>
   </div>
 
-  <!-- KHUNG HIỂN THỊ CỦA DEVELOPER TOOLS -->
+  <!-- DEVELOPER TOOLS -->
   <div class="panel developer-panel" id="developerToolsPanel" style="border-color: rgba(40, 240, 255, 0.25); background: rgba(12, 10, 26, 0.85);">
     <h2>🛠️ Developer Tools <span class="tag" style="border-color: var(--cyan); color: var(--cyan);">Offline Editor</span></h2>
     <div class="field" style="display: flex; gap: 15px; align-items: center; flex-wrap: wrap;">
@@ -374,7 +374,7 @@
   </div>
 </div>
 
-<!-- MODAL CỦA CHECK MAIL TM THỦ CÔNG -->
+<!-- MODAL CHECK MAIL TM -->
 <div class="modal-overlay" id="customCheckModal">
   <div class="modal-custom-box flex flex-col">
     <div class="border-b border-slate-800 bg-[#0b0f19]/90 px-6 py-4 flex justify-between items-center rounded-t-2xl">
@@ -830,9 +830,9 @@ function syncLengthInput(val, inputSource) {
   else if (inputSource === 'number_input') { document.getElementById('lengthSlider').value = numValue; }
 }
 
-// 🔤 BỘ TẠO CHUỖI NGẪU NHIÊN CHUẨN CẢ CHỮ HOA, CHỮ THƯỜNG VÀ SỐ
+// 🔤 BỘ TẠO CHUỖI NGẪU NHIÊN CHỈ CHỨA CHỮ THƯỜNG VÀ SỐ (BỎ CHỮ HOA)
 function getRandomAlphaNumericString(length) {
-  const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'; 
+  const chars = 'abcdefghijklmnopqrstuvwxyz0123456789'; 
   let result = '';
   for (let i = 0; i < length; i++) { 
     result += chars.charAt(Math.floor(Math.random() * chars.length)); 
@@ -853,15 +853,15 @@ async function loadAvailableDomains() {
 
 function copyGeneratedPassword() { const passVal = document.getElementById('generatedPasswordInput').value; if (!passVal) return; copyText(passVal, "📋 Đã sao chép mật khẩu Email!"); }
 
-// ⚡ TẠO MAIL MỚI GIỮ NGUYÊN VIẾT HOA VÀ SỐ
+// ⚡ TẠO MAIL MỚI (CHỈ CHỮ THƯỜNG & SỐ)
 async function createNewMail() {
   playMechanicalSound(880);
   const domain = document.getElementById('domainSelector').value; if (!domain) return;
-  const customVal = document.getElementById('customUsernameInput').value.trim();
+  const customVal = document.getElementById('customUsernameInput').value.trim().toLowerCase();
   let chosenLength = parseInt(document.getElementById('lengthNumberInput').value) || 10;
   
-  // Giữ nguyên chữ HOA, chữ thường và số
-  let username = customVal ? customVal.replace(/[^a-zA-Z0-9]/g, '') : getRandomAlphaNumericString(chosenLength);
+  // Tên mail chỉ bao gồm a-z và 0-9
+  let username = customVal ? customVal.replace(/[^a-z0-9]/g, '') : getRandomAlphaNumericString(chosenLength);
   if (customVal && !username) { showToast("Tên tài khoản không hợp lệ!", true); return; }
 
   const address = `${username}@${domain}`; const password = getRandomAlphaNumericString(12);
