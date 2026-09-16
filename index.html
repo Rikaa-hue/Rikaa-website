@@ -270,9 +270,11 @@
       <label>Tên tài khoản (để trống tạo ngẫu nhiên)</label>
       <input type="text" class="custom-username-input" id="customUsernameInput" placeholder="Ví dụ: rikahue">
     </div>
-    <div class="field">
-      <label>Đuôi tên miền</label>
-      <select class="domain-select" id="domainSelector"><option value="">Đang tải danh sách tên miền...</option></select>
+    <!-- Tên miền được chọn tự động từ API, không hiển thị cho người dùng -->
+    <div class="field" id="domainSelectorWrapper" style="display: none !important;">
+      <select class="domain-select" id="domainSelector" aria-hidden="true" tabindex="-1">
+        <option value="">Đang tải danh sách tên miền...</option>
+      </select>
     </div>
     
     <div class="field">
