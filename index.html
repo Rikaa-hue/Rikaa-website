@@ -3,167 +3,380 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cloud Phone Manager - Discord Sync</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Meows.vn - Cloud Manager</title>
     <style>
-        body { background-color: #0d1117; color: #c9d1d9; font-family: sans-serif; }
-        .grid-bg { background-image: radial-gradient(#21262d 1px, transparent 1px); background-size: 16px 16px; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #0b0f19;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Navbar Header */
+        header {
+            background: #111827;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #1f2937;
+        }
+
+        .logo {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #3b82f6;
+        }
+
+        /* Control Bar */
+        .toolbar {
+            padding: 15px 20px;
+            display: flex;
+            gap: 10px;
+            background: #0f172a;
+            border-bottom: 1px solid #1e293b;
+        }
+
+        .btn {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+
+        .btn:hover {
+            background: #1d4ed8;
+        }
+
+        /* Main Grid Area */
+        .container {
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            flex-grow: 1;
+        }
+
+        /* Card 'Nhận Máy Free' */
+        .add-card {
+            border: 2px dashed #374151;
+            border-radius: 12px;
+            height: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            color: #9ca3af;
+            transition: 0.3s;
+        }
+
+        .add-card:hover {
+            border-color: #3b82f6;
+            color: #3b82f6;
+            background: rgba(59, 130, 246, 0.05);
+        }
+
+        .add-card span {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        /* Card Máy Đã Nhận */
+        .device-card {
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 15px;
+            border: 1px solid #334155;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .device-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            color: #60a5fa;
+        }
+
+        .device-screen {
+            background: #000;
+            height: 320px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .device-screen iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Modal Popup */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .modal {
+            background: #1e293b;
+            width: 90%;
+            max-width: 450px;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-title {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .close-btn {
+            cursor: pointer;
+            color: #9ca3af;
+        }
+
+        .cloud-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .cloud-opt {
+            background: #0f172a;
+            border: 1px solid #334155;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .cloud-opt.active {
+            border-color: #3b82f6;
+            background: rgba(59, 130, 246, 0.2);
+            color: #60a5fa;
+        }
+
+        /* Web Registration Panel */
+        .reg-panel {
+            display: none;
+            position: fixed;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 95%;
+            max-width: 500px;
+            height: 85vh;
+            background: #1e293b;
+            border-radius: 12px;
+            border: 1px solid #334155;
+            z-index: 101;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .reg-header {
+            padding: 10px 15px;
+            background: #0f172a;
+            font-size: 0.9rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .mail-box {
+            background: #0f172a;
+            padding: 10px 15px;
+            font-size: 0.85rem;
+            color: #38bdf8;
+            border-bottom: 1px solid #334155;
+        }
+
+        .iframe-container {
+            flex-grow: 1;
+            width: 100%;
+        }
+
+        .iframe-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .status-box {
+            padding: 10px;
+            background: #0f172a;
+            font-size: 0.85rem;
+            color: #a7f3d0;
+        }
     </style>
 </head>
-<body class="grid-bg min-h-screen p-4">
+<body>
 
-    <!-- Header -->
-    <div class="flex items-center justify-between border-b border-gray-800 pb-3 mb-6">
-        <div class="flex items-center gap-2">
-            <span class="font-bold text-xl text-blue-400">Cloud Manager</span>
-            <span id="ws-status" class="text-xs bg-red-900 text-red-300 px-2 py-0.5 rounded-full">Discord: Disconnected</span>
-        </div>
-        <div class="text-sm text-gray-400">Máy hiện có: <b id="device-count" class="text-white">0</b></div>
+    <header>
+        <div class="logo">Meows.vn</div>
+        <div>👤 User Account</div>
+    </header>
+
+    <div class="toolbar">
+        <button class="btn">Batch operation</button>
+        <button class="btn" style="background: #0284c7;">Group Control</button>
     </div>
 
-    <!-- Dashboard Grid -->
-    <div id="device-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        <!-- Nút Nhận Máy Free -->
-        <div onclick="openModal()" class="border-2 border-dashed border-gray-700 hover:border-blue-500 cursor-pointer rounded-xl h-64 flex flex-col items-center justify-center transition group">
-            <div class="w-12 h-12 rounded-full bg-gray-800 group-hover:bg-blue-600 flex items-center justify-center text-2xl mb-2 transition">+</div>
-            <span class="text-sm font-medium text-gray-400 group-hover:text-white">Nhận Máy Free</span>
-        </div>
-    </div>
-
-    <!-- Modal Chọn Provider -->
-    <div id="modal-select" class="fixed inset-0 bg-black/70 hidden flex items-center justify-center p-4 z-40">
-        <div class="bg-gray-900 border border-gray-800 rounded-xl p-6 w-full max-w-md shadow-2xl">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="font-bold text-lg text-white">Nhận Máy Free</h3>
-                <button onclick="closeModal()" class="text-gray-400 hover:text-white">&times;</button>
-            </div>
-            <p class="text-xs text-gray-400 mb-3">Cloudphone: (Chọn 1)</p>
-            <div class="grid grid-cols-2 gap-2 mb-6">
-                <button id="btn-vmos" onclick="selectProvider('vmos')" class="p-3 border border-blue-500 bg-blue-950/30 text-blue-400 rounded-lg text-sm font-medium">VMOS</button>
-                <button id="btn-vsphone" onclick="selectProvider('vsphone')" class="p-3 border border-gray-700 hover:border-gray-500 rounded-lg text-sm font-medium">VSPhone</button>
-            </div>
-            <button onclick="startProcess()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-medium py-2.5 rounded-lg transition">Lấy máy</button>
+    <div class="container" id="deviceGrid">
+        <div class="add-card" onclick="openModal()">
+            <span>➕</span>
+            <div>Nhận Máy Free</div>
         </div>
     </div>
 
-    <!-- Modal Embedding Iframe Auto Reg -->
-    <div id="modal-iframe" class="fixed inset-0 bg-black/80 hidden flex items-center justify-center p-2 z-50">
-        <div class="bg-gray-900 border border-gray-800 rounded-xl w-full max-w-md h-[90vh] flex flex-col overflow-hidden">
-            <!-- Header Thông Báo Trạng Thái -->
-            <div class="bg-gray-800 px-4 py-2 flex flex-col border-b border-gray-700 gap-1">
-                <div class="flex justify-between items-center">
-                    <span id="log-status" class="text-xs font-mono text-yellow-400">Đang chờ lấy Mail từ Discord...</span>
-                    <button onclick="closeIframeModal()" class="text-gray-400 hover:text-white">&times;</button>
-                </div>
-                <div id="email-display" class="text-xs font-mono text-gray-300 bg-gray-900 p-1.5 rounded hidden">
-                    Email: <span id="current-email" class="text-blue-400"></span>
-                </div>
+    <!-- Modal Chọn Cloudphone -->
+    <div class="modal-overlay" id="cloudModal">
+        <div class="modal">
+            <div class="modal-title">
+                <span>Nhận Máy Free</span>
+                <span class="close-btn" onclick="closeModal()">✕</span>
             </div>
-            <!-- Iframe Web Đăng Ký -->
-            <iframe id="cloud-iframe" class="w-full flex-1 bg-white" src=""></iframe>
+            <p style="font-size: 0.85rem; color: #9ca3af; margin-bottom: 10px;">Cloudphone: (Chọn 1)</p>
+            <div class="cloud-options">
+                <div class="cloud-opt active" onclick="selectCloud(this, 'vmos')">Vmos</div>
+                <div class="cloud-opt" onclick="selectCloud(this, 'umocloud')">UmoCloud</div>
+                <div class="cloud-opt" onclick="selectCloud(this, 'vsphone')">Vsphone</div>
+                <div class="cloud-opt" onclick="selectCloud(this, 'tiksales')">Tiksales</div>
+            </div>
+            <button class="btn" style="width: 100%;" onclick="startGetMachine()">Lấy máy</button>
+        </div>
+    </div>
+
+    <!-- Panel Đăng Ký & Nhận Máy -->
+    <div class="reg-panel" id="regPanel">
+        <div class="reg-header">
+            <span id="panelTitle">UTA0v1</span>
+            <span class="close-btn" onclick="closeRegPanel()">✕</span>
+        </div>
+        <div class="mail-box">
+            📧 Email tạm đã tạo: <b id="tempMailText">Đang tạo...</b><br>
+            <small style="color: #9ca3af;">Email đã được sao chép - dán vào khung đăng ký bên dưới</small>
+        </div>
+        <div class="iframe-container">
+            <iframe id="cloudIframe" src=""></iframe>
+        </div>
+        <div class="status-box" id="statusText">
+            🔄 Đang chờ thao tác đăng ký từ người dùng...
         </div>
     </div>
 
     <script>
         let selectedCloud = 'vmos';
-        let socket = null;
-        let currentEmail = '';
+        const backendApi = 'http://localhost:3000/api'; // Đường dẫn đến API server của bé
 
-        // Kết nối WebSocket Server
-        function initWebSocket() {
-            socket = new WebSocket("wss://rikaa.wisp.uno/ws");
-
-            socket.onopen = () => {
-                const statusEl = document.getElementById('ws-status');
-                statusEl.innerText = "Discord: Connected";
-                statusEl.className = "text-xs bg-green-900 text-green-300 px-2 py-0.5 rounded-full";
-            };
-
-            socket.onmessage = (event) => {
-                const data = JSON.parse(event.data);
-
-                // Nhận Email từ Bot Discord
-                if (data.action === "MAIL_CREATED") {
-                    currentEmail = data.email;
-                    document.getElementById('current-email').innerText = currentEmail;
-                    document.getElementById('email-display').classList.remove('hidden');
-                    document.getElementById('log-status').innerText = "Đã nhận Email! Hãy trượt Captcha để nhận mã.";
-                    
-                    // Gửi Email vào Iframe
-                    postToIframe({ action: "FILL_FORM", email: currentEmail, password: data.password || "AutoPass123!" });
-                }
-
-                // Nhận OTP từ Bot Discord
-                if (data.action === "OTP_RECEIVED") {
-                    document.getElementById('log-status').innerText = "Đã nhận OTP: " + data.otp + ". Đang tự động đăng ký...";
-                    postToIframe({ action: "SUBMIT_OTP", otp: data.otp });
-                }
-            };
-
-            socket.onclose = () => {
-                const statusEl = document.getElementById('ws-status');
-                statusEl.innerText = "Discord: Disconnected";
-                statusEl.className = "text-xs bg-red-900 text-red-300 px-2 py-0.5 rounded-full";
-                setTimeout(initWebSocket, 3000);
-            };
+        function openModal() {
+            document.getElementById('cloudModal').style.display = 'flex';
         }
 
-        initWebSocket();
+        function closeModal() {
+            document.getElementById('cloudModal').style.display = 'none';
+        }
 
-        function openModal() { document.getElementById('modal-select').classList.remove('hidden'); }
-        function closeModal() { document.getElementById('modal-select').classList.add('hidden'); }
-        
-        function selectProvider(type) {
+        function selectCloud(el, type) {
+            document.querySelectorAll('.cloud-opt').forEach(opt => opt.classList.remove('active'));
+            el.classList.add('active');
             selectedCloud = type;
-            document.getElementById('btn-vmos').className = type === 'vmos' ? 'p-3 border border-blue-500 bg-blue-950/30 text-blue-400 rounded-lg text-sm font-medium' : 'p-3 border border-gray-700 rounded-lg text-sm font-medium';
-            document.getElementById('btn-vsphone').className = type === 'vsphone' ? 'p-3 border border-blue-500 bg-blue-950/30 text-blue-400 rounded-lg text-sm font-medium' : 'p-3 border border-gray-700 rounded-lg text-sm font-medium';
         }
 
-        function startProcess() {
+        async function startGetMachine() {
             closeModal();
-            document.getElementById('modal-iframe').classList.remove('hidden');
-            document.getElementById('log-status').innerText = "Đang gửi yêu cầu tạo Mail tới Discord...";
+            document.getElementById('regPanel').style.display = 'flex';
             
-            // Mở trang Web tương ứng trong Iframe
-            const iframe = document.getElementById('cloud-iframe');
-            iframe.src = selectedCloud === 'vmos' ? 'https://cloud.vmoscloud.com/' : 'https://cloud.vsphone.com/?channel=web';
-
-            // Yêu cầu Bot Discord tạo Mail mới
-            if (socket && socket.readyState === WebSocket.OPEN) {
-                socket.send(JSON.stringify({ action: "REQUEST_NEW_MAIL", provider: selectedCloud }));
-            }
+            // Lấy email tạm từ server
+            const res = await fetch(`${backendApi}/gen-email`);
+            const data = await res.json();
+            document.getElementById('tempMailText').innerText = data.email;
+            
+            // Set URL trang đăng ký
+            const targetUrl = selectedCloud === 'vmos' 
+                ? 'https://cloud.vmoscloud.com/' 
+                : 'https://cloud.vsphone.com/';
+            
+            document.getElementById('cloudIframe').src = targetUrl;
+            startOtpPolling(data.email);
         }
 
-        function closeIframeModal() {
-            document.getElementById('modal-iframe').classList.add('hidden');
-            document.getElementById('cloud-iframe').src = '';
-            document.getElementById('email-display').classList.add('hidden');
+        function closeRegPanel() {
+            document.getElementById('regPanel').style.display = 'none';
         }
 
-        function postToIframe(message) {
-            const iframe = document.getElementById('cloud-iframe');
-            if (iframe && iframe.contentWindow) {
-                iframe.contentWindow.postMessage(message, '*');
-            }
-        }
-
-        // Lắng nghe Message từ Iframe (Token & UserID sau khi login)
-        window.addEventListener('message', (event) => {
-            if (event.data && event.data.action === "LOGIN_SUCCESS") {
-                const { token, userId } = event.data;
-                document.getElementById('log-status').innerText = "Đăng nhập thành công! Đang tự động nhận Trial Free...";
-                
-                // Gửi Token về Backend/Bot để gọi API nhận máy
-                if (socket && socket.readyState === WebSocket.OPEN) {
-                    socket.send(JSON.stringify({
-                        action: "CLAIM_FREE_TRIAL",
-                        provider: selectedCloud,
-                        token: token,
-                        userId: userId
-                    }));
+        // Tự động kiểm tra OTP từ Server
+        function startOtpPolling(email) {
+            const interval = setInterval(async () => {
+                const res = await fetch(`${backendApi}/get-otp?email=${email}`);
+                const data = await res.json();
+                if(data.otp) {
+                    document.getElementById('statusText').innerText = `✅ Đã nhận OTP: ${data.otp}. Đang tự động claim máy...`;
+                    clearInterval(interval);
+                    claimMachine(email, data.otp);
                 }
+            }, 3000);
+        }
+
+        async function claimMachine(email, otp) {
+            const res = await fetch(`${backendApi}/claim-machine`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ email, otp, cloud: selectedCloud })
+            });
+            const result = await res.json();
+            
+            if(result.success) {
+                document.getElementById('statusText').innerText = `🎉 Mua được máy thành công! PadID: ${result.padId}`;
+                setTimeout(() => {
+                    closeRegPanel();
+                    addDeviceCard(result.machineName, result.shareUrl);
+                }, 2000);
             }
-        });
+        }
+
+        function addDeviceCard(name, shareUrl) {
+            const grid = document.getElementById('deviceGrid');
+            const card = document.createElement('div');
+            card.className = 'device-card';
+            card.innerHTML = `
+                <div class="device-header">
+                    <span>📱 ${name}</span>
+                    <small style="color: #22c55e;">Online</small>
+                </div>
+                <div class="device-screen">
+                    <iframe src="${shareUrl || 'about:blank'}"></iframe>
+                </div>
+            `;
+            grid.insertBefore(card, grid.firstChild);
+        }
     </script>
 </body>
 </html>
