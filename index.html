@@ -79,18 +79,6 @@
                     <span class="text-gray-300">OTP: <strong id="otp-display" class="text-green-400 font-mono tracking-wider">Đang chờ gửi...</strong></span>
                     <span id="otp-status" class="text-gray-500 text-[10px]"><i class="fa-solid fa-spinner fa-spin"></i> Lắng nghe OTP...</span>
                 </div>
-
-                <!-- Token & UserId Bar -->
-                <div class="grid grid-cols-2 gap-2 bg-gray-950/80 border border-gray-700/60 p-2 rounded text-[11px]">
-                    <div class="truncate">
-                        <span class="text-gray-400">Token:</span> 
-                        <strong id="token-display" class="text-blue-400 font-mono select-all">Chưa bắt được</strong>
-                    </div>
-                    <div class="truncate">
-                        <span class="text-gray-400">UserId:</span> 
-                        <strong id="uid-display" class="text-green-400 font-mono select-all">Chưa bắt được</strong>
-                    </div>
-                </div>
             </div>
 
             <!-- Web Frame -->
@@ -99,19 +87,20 @@
             </div>
 
             <!-- Footer Action -->
-            <div class="p-3 bg-gray-900 border-t border-gray-800 flex justify-between items-center">
-                <span id="claim-status" class="text-xs text-gray-400">Hoàn tất đăng ký trong Web rồi bấm nút lấy máy</span>
-                <button id="claim-btn" onclick="startClaimProcess()" class="bg-green-600 hover:bg-green-500 text-white font-medium px-4 py-2 rounded-lg text-sm transition">
-                    <i class="fa-solid fa-gift mr-1"></i> Lấy Máy
+            <div class="p-3 bg-gray-900 border-t border-gray-800 flex justify-between items-center gap-2">
+                <div class="flex-1">
+                    <input type="text" id="token-input" placeholder="Nhập hoặc dán Token/Auth tại đây..." class="w-full bg-gray-950 border border-gray-700 rounded px-3 py-1.5 text-xs text-white focus:outline-none focus:border-blue-500">
+                </div>
+                <button id="claim-btn" onclick="startClaimProcessByToken()" class="bg-green-600 hover:bg-green-500 text-white font-medium px-4 py-2 rounded-lg text-sm transition shrink-0">
+                    <i class="fa-solid fa-gift mr-1"></i> Nhận Qua Token
                 </button>
             </div>
         </div>
     </div>
 
     <script>
-        // ⚠️ Điền domain Wispbyte của bé vào đây (Nếu mở trực tiếp từ Wispbyte thì giữ nguyên location.origin)
         const BACKEND_URL = window.location.hostname.includes('github.io') 
-            ? 'https://rikaa.wisp.uno'  // Thay sub-domain Wispbyte chính xác của bé vào đây
+            ? 'https://rikaa.wisp.uno' 
             : window.location.origin;
 
         let currentCloud = '';
@@ -137,8 +126,7 @@
             document.getElementById('reg-cloud-title').innerText = cloud.toUpperCase() + ' CLOUD';
             document.getElementById('temp-email-display').innerText = 'Đang khởi tạo...';
             document.getElementById('otp-display').innerText = 'Đang chờ gửi...';
-            document.getElementById('token-display').innerText = 'Chưa bắt được';
-            document.getElementById('uid-display').innerText = 'Chưa bắt được';
+            document.getElementById('token-input').value = '';
             document.getElementById('reg-modal').classList.remove('hidden');
             document.getElementById('reg-modal').classList.add('flex');
 
@@ -179,39 +167,43 @@
             }, 3000);
         }
 
-        async function startClaimProcess() {
-            if(!currentEmail) return alert('Chưa tạo được email!');
+        // Nhận máy trực tiếp bằng Token người dùng nhập
+        async function startClaimProcessByToken() {
+            let userToken = document.getElementById('token-input').value.trim();
             
-            const btn = document.getElementById('claim-btn');
-            const tokenDisp = document.getElementById('token-display');
-            const uidDisp = document.getElementById('uid-display');
+            if(!userToken) {
+                userToken = prompt("Vui lòng dán Token (hoặc Authorization Code) của bé vào đây:");
+                if(!userToken) return;
+            }
 
+            const btn = document.getElementById('claim-btn');
             btn.disabled = true;
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang bắt Token & Lấy máy...';
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang Claim Trial...';
 
             try {
-                const res = await fetch(`${BACKEND_URL}/api/claim-trial`, {
+                const res = await fetch(`${BACKEND_URL}/api/claim-by-token`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ cloud: currentCloud, email: currentEmail, password: currentPassword })
+                    body: JSON.stringify({ 
+                        cloud: currentCloud, 
+                        email: currentEmail || 'N/A', 
+                        token: userToken 
+                    })
                 });
                 
                 const data = await res.json();
                 if(data.status === 'ok') {
-                    tokenDisp.innerText = data.token ? data.token.substring(0, 16) + '...' : 'Không lấy được';
-                    uidDisp.innerText = data.userId || 'Không lấy được';
-
                     alert(`✅ Thành công! Tên máy: ${data.machine_name}`);
                     closeModal('reg-modal');
                     addDeviceToUI(data);
                 } else {
-                    alert(`❌ Lỗi: ${data.msg}`);
+                    alert(`❌ Lỗi Claim: ${data.msg}`);
                 }
             } catch(e) {
-                alert('Lỗi kết nối tới server Backend!');
+                alert('Lỗi kết nối tới Backend!');
             } finally {
                 btn.disabled = false;
-                btn.innerHTML = '<i class="fa-solid fa-gift mr-1"></i> Lấy Máy';
+                btn.innerHTML = '<i class="fa-solid fa-gift mr-1"></i> Nhận Qua Token';
             }
         }
 
@@ -226,10 +218,9 @@
                 </div>
                 <div class="text-xs space-y-1 text-gray-400 font-mono">
                     <div>Email: <span class="text-gray-200">${device.email}</span></div>
-                    <div>Pass: <span class="text-gray-200">${device.password}</span></div>
-                    <div>UserId: <span class="text-green-400 select-all">${device.userId}</span></div>
+                    <div>UserId: <span class="text-green-400 select-all">${device.userId || 'Auto'}</span></div>
                     <div class="truncate">Token: <span class="text-blue-400 select-all">${device.token}</span></div>
-                    <div>Share: <span class="text-yellow-400 select-all">${device.share_code || 'N/A'}</span></div>
+                    <div>Status: <span class="text-green-400 font-bold">Thành công</span></div>
                 </div>
             `;
             container.appendChild(card);
