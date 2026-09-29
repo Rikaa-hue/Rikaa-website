@@ -34,7 +34,6 @@
             <div class="text-sm text-gray-400">Máy hiện có: <span class="text-white font-bold" id="machine-count">0</span></div>
         </div>
 
-        <!-- Devices Grid -->
         <div id="devices-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
     </main>
 
@@ -81,7 +80,7 @@
                     <span id="otp-status" class="text-gray-500 text-[10px]"><i class="fa-solid fa-spinner fa-spin"></i> Lắng nghe OTP...</span>
                 </div>
 
-                <!-- Token & UserId Bar (Mới bổ sung y hệt clip) -->
+                <!-- Token & UserId Bar -->
                 <div class="grid grid-cols-2 gap-2 bg-gray-950/80 border border-gray-700/60 p-2 rounded text-[11px]">
                     <div class="truncate">
                         <span class="text-gray-400">Token:</span> 
@@ -110,6 +109,11 @@
     </div>
 
     <script>
+        // ⚠️ Điền domain Wispbyte của bé vào đây (Nếu mở trực tiếp từ Wispbyte thì giữ nguyên location.origin)
+        const BACKEND_URL = window.location.hostname.includes('github.io') 
+            ? 'https://rikaa.wisp.uno'  // Thay sub-domain Wispbyte chính xác của bé vào đây
+            : window.location.origin;
+
         let currentCloud = '';
         let currentEmail = '';
         let currentPassword = '';
@@ -141,16 +145,18 @@
             document.getElementById('reg-iframe').src = cloud === 'vmos' ? 'https://cloud.vmoscloud.com/' : 'https://cloud.vsphone.com/?channel=web';
 
             try {
-                const res = await fetch('/api/create-mail', { method: 'POST' });
+                const res = await fetch(`${BACKEND_URL}/api/create-mail`, { method: 'POST' });
                 const data = await res.json();
                 if(data.status === 'ok') {
                     currentEmail = data.email;
                     currentPassword = data.password;
                     document.getElementById('temp-email-display').innerText = currentEmail;
                     startPollingOTP();
+                } else {
+                    document.getElementById('temp-email-display').innerText = 'Lỗi server tạo mail!';
                 }
             } catch (e) {
-                document.getElementById('temp-email-display').innerText = 'Lỗi tạo Email!';
+                document.getElementById('temp-email-display').innerText = 'Lỗi kết nối Backend!';
             }
         }
 
@@ -163,7 +169,7 @@
             if(otpPollInterval) clearInterval(otpPollInterval);
             otpPollInterval = setInterval(async () => {
                 try {
-                    const res = await fetch(`/api/get-otp?email=${encodeURIComponent(currentEmail)}`);
+                    const res = await fetch(`${BACKEND_URL}/api/get-otp?email=${encodeURIComponent(currentEmail)}`);
                     const data = await res.json();
                     if(data.otp) {
                         document.getElementById('otp-display').innerText = data.otp;
@@ -184,8 +190,7 @@
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang bắt Token & Lấy máy...';
 
             try {
-                // Gọi API Login ngầm để lấy Token + UserId & Claim Trial luôn
-                const res = await fetch('/api/claim-trial', {
+                const res = await fetch(`${BACKEND_URL}/api/claim-trial`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ cloud: currentCloud, email: currentEmail, password: currentPassword })
@@ -193,7 +198,6 @@
                 
                 const data = await res.json();
                 if(data.status === 'ok') {
-                    // Cập nhật Token & UserId lên Topbar UI
                     tokenDisp.innerText = data.token ? data.token.substring(0, 16) + '...' : 'Không lấy được';
                     uidDisp.innerText = data.userId || 'Không lấy được';
 
@@ -204,7 +208,7 @@
                     alert(`❌ Lỗi: ${data.msg}`);
                 }
             } catch(e) {
-                alert('Lỗi kết nối tới server!');
+                alert('Lỗi kết nối tới server Backend!');
             } finally {
                 btn.disabled = false;
                 btn.innerHTML = '<i class="fa-solid fa-gift mr-1"></i> Lấy Máy';
