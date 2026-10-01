@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cloudphone Manager Dashboard</title>
+    <title>VMOS Cloud Device Manager</title>
     <style>
         :root {
             --bg-color: #0b0f19;
@@ -11,47 +11,54 @@
             --accent-color: #2563eb;
             --text-color: #e2e8f0;
             --border-color: #1e293b;
+            --success-color: #22c55e;
         }
 
         body {
             margin: 0;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
         }
 
-        /* Header */
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 20px;
+            padding: 15px 25px;
             background-color: #0d1322;
             border-bottom: 1px solid var(--border-color);
         }
 
         .logo {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             font-weight: bold;
             color: #60a5fa;
         }
 
-        /* Control Bar */
-        .control-bar {
-            padding: 12px 20px;
+        .stats-bar {
+            padding: 15px 25px;
             display: flex;
-            gap: 10px;
+            gap: 15px;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.02);
             border-bottom: 1px solid var(--border-color);
+            flex-wrap: wrap;
         }
 
         .btn {
             background-color: var(--card-bg);
             border: 1px solid var(--border-color);
             color: white;
-            padding: 8px 14px;
+            padding: 8px 16px;
             border-radius: 6px;
             cursor: pointer;
             font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .btn:hover {
+            border-color: var(--accent-color);
         }
 
         .btn-primary {
@@ -59,85 +66,129 @@
             border: none;
         }
 
-        /* Main Grid Grid Devices */
+        .btn-primary:hover {
+            background-color: #1d4ed8;
+        }
+
+        /* Responsive Grid chứa danh sách máy */
         .device-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
             gap: 20px;
-            padding: 20px;
+            padding: 25px;
         }
 
         .device-card {
             background-color: var(--card-bg);
             border: 1px solid var(--border-color);
-            border-radius: 8px;
+            border-radius: 10px;
             overflow: hidden;
             display: flex;
             flex-direction: column;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
         }
 
         .card-header {
-            padding: 10px;
-            background-color: rgba(255, 255, 255, 0.05);
+            padding: 12px 15px;
+            background-color: rgba(255, 255, 255, 0.04);
             display: flex;
             justify-content: space-between;
-            font-size: 0.9rem;
-        }
-
-        .screen-container {
-            height: 480px;
-            background-color: #000;
-            display: flex;
             align-items: center;
-            justify-content: center;
-            position: relative;
+            border-bottom: 1px solid var(--border-color);
         }
 
-        .screen-container iframe {
-            width: 100%;
-            height: 100%;
+        .badge-online {
+            background-color: rgba(34, 197, 94, 0.2);
+            color: var(--success-color);
+            font-size: 0.75rem;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-weight: bold;
+        }
+
+        .card-body {
+            padding: 15px;
+            font-size: 0.85rem;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #0f172a;
+            padding: 8px 10px;
+            border-radius: 6px;
+            border: 1px solid #1e293b;
+        }
+
+        .info-value {
+            font-family: monospace;
+            color: #93c5fd;
+            max-width: 180px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .copy-btn {
+            background: transparent;
             border: none;
+            color: #a1a1aa;
+            cursor: pointer;
+            font-size: 0.8rem;
         }
 
-        /* Modal Popup */
+        .copy-btn:hover { color: white; }
+
+        .card-footer {
+            padding: 12px 15px;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            gap: 10px;
+        }
+
+        /* Modal thêm máy mới */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.8);
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 100;
+            z-index: 1000;
         }
 
         .modal {
             background-color: var(--card-bg);
-            padding: 20px;
+            padding: 25px;
             border-radius: 12px;
-            width: 320px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            width: 380px;
+            border: 1px solid var(--border-color);
         }
 
-        .provider-options {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin: 15px 0;
+        .form-group {
+            margin-bottom: 12px;
         }
 
-        .provider-btn {
-            padding: 10px;
-            background: #1e293b;
-            border: 1px solid #334155;
-            color: white;
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            margin-bottom: 5px;
+            color: #94a3b8;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 8px 10px;
             border-radius: 6px;
-            cursor: pointer;
-            text-align: center;
-        }
-
-        .provider-btn.active {
-            border-color: var(--accent-color);
-            background: #1d4ed8;
+            border: 1px solid var(--border-color);
+            background-color: #0f172a;
+            color: white;
+            box-sizing: border-box;
         }
 
         .hidden { display: none; }
@@ -146,69 +197,169 @@
 <body>
 
     <header>
-        <div class="logo">CloudManager.vn</div>
-        <div><span>Máy hiện có: <strong id="device-count">1</strong></span></div>
+        <div class="logo">VMOS Storage & Manager</div>
+        <div>Tổng số máy: <strong id="total-count" style="color: #60a5fa;">0</strong></div>
     </header>
 
-    <div class="control-bar">
-        <button class="btn">Chọn tất cả</button>
-        <button class="btn">Link Chia Sẻ</button>
-        <button class="btn btn-primary">Batch Operation</button>
+    <div class="stats-bar">
+        <button class="btn btn-primary" onclick="openAddModal()">+ Thêm / Lưu Máy VMOS Mới</button>
+        <button class="btn" onclick="exportData()">Xuất danh sách (JSON)</button>
+        <button class="btn" onclick="clearAllData()" style="color: #ef4444; border-color: #7f1d1d;">Xóa tất cả</button>
     </div>
 
-    <main class="device-grid">
-        <!-- Thẻ Máy ảo hiện tại -->
-        <div class="device-card">
-            <div class="card-header">
-                <span><input type="checkbox"> System Gift</span>
-                <span style="color: #4ade80;">Online</span>
-            </div>
-            <div class="screen-container">
-                <!-- Vùng hiển thị màn hình Android (VNC / WebRTC / Scrcpy Web) -->
-                <p style="color: #64748b;">[Màn hình Android Live Stream]</p>
-            </div>
-        </div>
-
-        <!-- Nút Nhận Máy Mới -->
-        <div class="device-card" style="border: 2px dashed #334155; justify-content: center; align-items: center; min-height: 520px; cursor: pointer;" onclick="toggleModal(true)">
-            <div style="text-align: center;">
-                <div style="font-size: 2rem; margin-bottom: 10px;">+</div>
-                <div>Nhận Máy Free</div>
-            </div>
-        </div>
+    <!-- Danh sách các máy VMOS đã lưu -->
+    <main class="device-grid" id="device-container">
+        <!-- Các thẻ máy sẽ tự động tạo ở đây bằng JavaScript -->
     </main>
 
-    <!-- Modal chọn dịch vụ Cloudphone -->
-    <div id="modal" class="modal-overlay hidden">
+    <!-- Modal Form Thêm Máy -->
+    <div id="add-modal" class="modal-overlay hidden">
         <div class="modal">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <h3 style="margin: 0;">Nhận Máy Free</h3>
-                <span style="cursor: pointer;" onclick="toggleModal(false)">&times;</span>
+            <h3 style="margin-top: 0;">Lưu Thông Tin Máy VMOS</h3>
+            <div class="form-group">
+                <label>Tên máy / Gói:</label>
+                <input type="text" id="input-name" placeholder="Ví dụ: VMOS System Gift 1">
             </div>
-            <p style="font-size: 0.85rem; color: #94a3b8; margin-top: 5px;">Cloudphone: (Chọn 1)</p>
-            
-            <div class="provider-options">
-                <div class="provider-btn active">Vmos</div>
-                <div class="provider-btn">UmoCloud</div>
-                <div class="provider-btn">Vsphone</div>
-                <div class="provider-btn">Tksales</div>
+            <div class="form-group">
+                <label>User ID:</label>
+                <input type="text" id="input-userid" placeholder="Ví dụ: 7532421">
             </div>
-
-            <button class="btn btn-primary" style="width: 100%; padding: 10px;" onclick="claimDevice()">Lấy máy</button>
+            <div class="form-group">
+                <label>Token:</label>
+                <input type="text" id="input-token" placeholder="Nhập Token VMOS...">
+            </div>
+            <div class="form-group">
+                <label>Share Code (Mã chia sẻ):</label>
+                <input type="text" id="input-share" placeholder="Ví dụ: 2BC9-1360-E880-...">
+            </div>
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <button class="btn btn-primary" style="flex: 1;" onclick="saveDevice()">Lưu Máy</button>
+                <button class="btn" onclick="closeAddModal()">Hủy</button>
+            </div>
         </div>
     </div>
 
     <script>
-        function toggleModal(show) {
-            const modal = document.getElementById('modal');
-            if (show) modal.classList.remove('hidden');
-            else modal.classList.add('hidden');
+        // Khởi tạo danh sách máy từ kho lưu trữ trình duyệt (LocalStorage)
+        let devices = JSON.parse(localStorage.getItem('vmos_devices')) || [];
+
+        function renderDevices() {
+            const container = document.getElementById('device-container');
+            const totalCount = document.getElementById('total-count');
+            container.innerHTML = '';
+            totalCount.innerText = devices.length;
+
+            if (devices.length === 0) {
+                container.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; color: #64748b; padding: 50px 0;">
+                        Chưa có máy VMOS nào được lưu. Bấm "Thêm / Lưu Máy VMOS Mới" để bắt đầu.
+                    </div>`;
+                return;
+            }
+
+            devices.forEach((dev, index) => {
+                const card = document.createElement('div');
+                card.className = 'device-card';
+                card.innerHTML = `
+                    <div class="card-header">
+                        <strong>${dev.name}</strong>
+                        <span class="badge-online">Hoạt động</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="info-row">
+                            <span>User ID:</span>
+                            <span class="info-value">${dev.userId}</span>
+                            <button class="copy-btn" onclick="copyText('${dev.userId}')">Copy</button>
+                        </div>
+                        <div class="info-row">
+                            <span>Token:</span>
+                            <span class="info-value" title="${dev.token}">${dev.token}</span>
+                            <button class="copy-btn" onclick="copyText('${dev.token}')">Copy</button>
+                        </div>
+                        <div class="info-row">
+                            <span>Share Code:</span>
+                            <span class="info-value" title="${dev.shareCode}">${dev.shareCode}</span>
+                            <button class="copy-btn" onclick="copyText('${dev.shareCode}')">Copy</button>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-primary" style="flex: 1;" onclick="connectDevice('${dev.shareCode}')">Mở Điều Khiển</button>
+                        <button class="btn" style="color: #ef4444;" onclick="deleteDevice(${index})">Xóa</button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
         }
 
-        function claimDevice() {
-            alert("Bắt đầu tiến trình tự động tạo tài khoản & lấy máy...");
-            toggleModal(false);
+        function openAddModal() {
+            document.getElementById('add-modal').classList.remove('hidden');
         }
+
+        function closeAddModal() {
+            document.getElementById('add-modal').classList.add('hidden');
+        }
+
+        function saveDevice() {
+            const name = document.getElementById('input-name').value || 'VMOS Machine';
+            const userId = document.getElementById('input-userid').value;
+            const token = document.getElementById('input-token').value;
+            const shareCode = document.getElementById('input-share').value;
+
+            if (!token && !shareCode) {
+                alert("Vui lòng nhập ít nhất Token hoặc Share Code!");
+                return;
+            }
+
+            devices.push({ name, userId, token, shareCode });
+            localStorage.setItem('vmos_devices', JSON.stringify(devices));
+            
+            // Clear inputs
+            document.getElementById('input-name').value = '';
+            document.getElementById('input-userid').value = '';
+            document.getElementById('input-token').value = '';
+            document.getElementById('input-share').value = '';
+
+            closeAddModal();
+            renderDevices();
+        }
+
+        function deleteDevice(index) {
+            if (confirm("Bạn có chắc muốn xóa máy này khỏi danh sách lưu trữ?")) {
+                devices.splice(index, 1);
+                localStorage.setItem('vmos_devices', JSON.stringify(devices));
+                renderDevices();
+            }
+        }
+
+        function clearAllData() {
+            if (confirm("CẢNH BÁO: Xóa tất cả dữ liệu danh sách máy đã lưu?")) {
+                devices = [];
+                localStorage.removeItem('vmos_devices');
+                renderDevices();
+            }
+        }
+
+        function copyText(text) {
+            navigator.clipboard.writeText(text);
+            alert("Đã copy: " + text);
+        }
+
+        function connectDevice(shareCode) {
+            alert("Đang kết nối điều khiển máy với mã: " + shareCode);
+        }
+
+        function exportData() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(devices, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", "vmos_devices.json");
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+        }
+
+        // Tải danh sách khi khởi chạy trang
+        renderDevices();
     </script>
 </body>
 </html>
