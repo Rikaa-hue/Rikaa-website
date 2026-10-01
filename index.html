@@ -3,80 +3,139 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VMOS Cloud Manager</title>
+    <title>Meows Cloud Manager</title>
     <style>
         :root {
-            --bg-color: #0b0f19;
-            --card-bg: #151c2c;
-            --accent-color: #2563eb;
-            --text-color: #e2e8f0;
+            --bg-color: #080c14;
+            --panel-bg: #0f172a;
+            --card-bg: #1e293b;
+            --accent-blue: #2563eb;
             --border-color: #1e293b;
+            --text-main: #f8fafc;
         }
 
         body {
             margin: 0;
-            font-family: system-ui, -apple-system, sans-serif;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background-color: var(--bg-color);
-            color: var(--text-color);
+            color: var(--text-main);
         }
 
+        /* Top Header */
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 25px;
-            background-color: #0d1322;
-            border-bottom: 1px solid var(--border-color);
+            padding: 12px 20px;
+            background-color: #0b1120;
+            border-bottom: 1px solid #1e293b;
         }
 
-        .logo { font-size: 1.3rem; font-weight: bold; color: #60a5fa; }
+        .logo {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #60a5fa;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
 
         .control-bar {
-            padding: 15px 25px;
+            padding: 10px 20px;
             display: flex;
-            gap: 12px;
-            border-bottom: 1px solid var(--border-color);
+            gap: 10px;
+            border-bottom: 1px solid #1e293b;
+            background-color: #0d1527;
         }
 
         .btn {
             background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
+            border: 1px solid #334155;
             color: white;
-            padding: 8px 16px;
+            padding: 6px 14px;
             border-radius: 6px;
             cursor: pointer;
+            font-size: 0.85rem;
         }
 
-        .btn-primary { background-color: var(--accent-color); border: none; }
+        .btn-primary {
+            background-color: var(--accent-blue);
+            border: none;
+        }
 
+        /* Grid chứa danh sách máy ảo */
         .device-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-            padding: 25px;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 15px;
+            padding: 20px;
         }
 
         .device-card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
+            background-color: var(--panel-bg);
+            border: 1px solid #334155;
+            border-radius: 8px;
             overflow: hidden;
             display: flex;
             flex-direction: column;
         }
 
         .card-header {
-            padding: 10px 15px;
-            background: rgba(255, 255, 255, 0.03);
+            padding: 8px 12px;
+            background-color: #1e293b;
             display: flex;
             justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
         }
 
-        /* Modal Khung Nhận Máy */
+        .screen-area {
+            height: 420px;
+            background-color: #000;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Màn hình mô phỏng Android */
+        .android-mockup {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, #1e3a8a 0%, #0f172a 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #93c5fd;
+            font-size: 0.9rem;
+        }
+
+        .add-card-btn {
+            border: 2px dashed #334155;
+            background: transparent;
+            min-height: 460px;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #94a3b8;
+            transition: all 0.2s;
+        }
+
+        .add-card-btn:hover {
+            border-color: var(--accent-blue);
+            color: white;
+        }
+
+        /* Modal Đăng ký VMOS Cloud */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.85);
+            background: rgba(0, 0, 0, 0.75);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -84,35 +143,51 @@
         }
 
         .modal-box {
-            background-color: var(--card-bg);
-            width: 90%;
-            max-width: 450px;
+            background-color: #0f172a;
+            border: 1px solid #334155;
             border-radius: 12px;
-            border: 1px solid var(--border-color);
+            width: 360px;
             overflow: hidden;
-            display: flex;
-            flex-direction: column;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
         }
 
         .modal-header {
             padding: 12px 15px;
-            background: #0d1322;
+            background-color: #1e293b;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid var(--border-color);
         }
 
-        .iframe-container {
-            width: 100%;
-            height: 520px;
-            background: #fff;
+        .modal-body {
+            padding: 15px;
         }
 
-        .iframe-container iframe {
+        .vmos-iframe-container {
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 15px;
+            color: #333;
+        }
+
+        .vmos-input {
             width: 100%;
-            height: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+
+        .vmos-btn {
+            width: 100%;
+            padding: 10px;
+            background-color: #2563eb;
+            color: white;
             border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
         }
 
         .hidden { display: none; }
@@ -121,107 +196,155 @@
 <body>
 
     <header>
-        <div class="logo">VMOS Manager</div>
-        <div>Số máy đang có: <strong id="count">0</strong></div>
+        <div class="logo"> Meows.vn Cloud Manager</div>
+        <div style="font-size: 0.85rem;">Máy hiện có: <strong id="dev-count">0</strong></div>
     </header>
 
     <div class="control-bar">
-        <button class="btn btn-primary" onclick="openClaimModal()">+ Nhận Máy Free (VMOS Cloud)</button>
+        <button class="btn">Chọn tất cả</button>
+        <button class="btn">Link Chia Sẻ</button>
+        <button class="btn btn-primary">Batch Operation</button>
     </div>
 
-    <!-- Danh sách máy đã nhận -->
-    <main class="device-grid" id="device-grid">
-        <!-- Danh sách máy đã lưu sẽ tự hiện ở đây -->
+    <main class="device-grid" id="grid-container">
+        <!-- Nút nhận máy mới luôn nằm ở đây -->
+        <div class="add-card-btn" id="btn-add-device" onclick="showSelectProviderModal()">
+            <div style="font-size: 2.5rem; margin-bottom: 8px;">+</div>
+            <div>Nhận Máy Free</div>
+        </div>
     </main>
 
-    <!-- Modal nhúng trang web VMOS Cloud để đăng nhập -->
-    <div id="vmos-modal" class="modal-overlay hidden">
+    <!-- Modal 1: Chọn Nhà Cung Cấp -->
+    <div id="modal-provider" class="modal-overlay hidden">
         <div class="modal-box">
             <div class="modal-header">
-                <span>Đăng nhập VMOS Cloud</span>
-                <button class="btn" style="padding: 2px 8px;" onclick="closeClaimModal()">X</button>
+                <strong>Nhận Máy Free</strong>
+                <span style="cursor:pointer" onclick="closeModal('modal-provider')">&times;</span>
             </div>
-            
-            <div class="iframe-container">
-                <!-- Nhúng trực tiếp trang đăng nhập VMOS Cloud -->
-                <iframe id="vmos-frame" src="about:blank"></iframe>
+            <div class="modal-body">
+                <p style="font-size: 0.85rem; color: #94a3b8; margin-top:0;">Cloudphone: (Chọn 1)</p>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px;">
+                    <button class="btn btn-primary" style="padding: 10px;">VMOS</button>
+                    <button class="btn" style="padding: 10px;">UmoCloud</button>
+                    <button class="btn" style="padding: 10px;">Vsphone</button>
+                    <button class="btn" style="padding: 10px;">Tksales</button>
+                </div>
+                <button class="btn btn-primary" style="width: 100%; padding: 10px;" onclick="openVmosAuthModal()">Lấy máy</button>
             </div>
+        </div>
+    </div>
 
-            <div style="padding: 12px; background: #0d1322; border-top: 1px solid var(--border-color); display: flex; gap: 10px;">
-                <button class="btn btn-primary" style="flex: 1;" onclick="confirmAddMachine()">Đã nhận máy thành công</button>
+    <!-- Modal 2: Giao diện Đăng ký VMOS Cloud & Lấy OTP -->
+    <div id="modal-vmos-auth" class="modal-overlay hidden">
+        <div class="modal-box" style="width: 380px;">
+            <div class="modal-header">
+                <strong id="auth-title">UTA0v1.</strong>
+                <span style="cursor:pointer" onclick="closeModal('modal-vmos-auth')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <!-- Khung hiển thị Email Tạm & Trạng thái OTP -->
+                <div style="background: #1e293b; padding: 8px; border-radius: 6px; font-size: 0.75rem; margin-bottom: 10px;">
+                    <div>Email tạm đã tạo: <strong id="temp-email" style="color:#60a5fa;">...</strong></div>
+                    <div style="color: #34d399; margin-top: 4px;" id="otp-status">Đang chờ mã xác minh (check mỗi 2.5s)...</div>
+                </div>
+
+                <!-- Cửa sổ Đăng ký VMOS -->
+                <div class="vmos-iframe-container" id="vmos-form-box">
+                    <div style="text-align: center; margin-bottom: 15px;">
+                        <h2 style="color: #2563eb; margin: 0;">VMOS Cloud</h2>
+                    </div>
+                    <input type="text" id="vmos-email-input" class="vmos-input" readonly placeholder="Đang tự điền email...">
+                    <button class="vmos-btn" onclick="submitVmosRegister()">Đăng nhập/Đăng ký</button>
+                </div>
+
+                <!-- Khung Nhập OTP (Tự điền khi tìm thấy) -->
+                <div class="vmos-iframe-container hidden" id="vmos-otp-box" style="margin-top: 10px;">
+                    <p style="margin: 0 0 8px 0; font-size: 0.85rem;">Mã xác minh (OTP):</p>
+                    <input type="text" id="vmos-otp-input" class="vmos-input" placeholder="Mã 6 chữ số...">
+                    <button class="vmos-btn" style="background-color: #16a34a;" onclick="finishRegisterAndCreateMachine()">Xác Nhận & Tạo Máy</button>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        let machines = JSON.parse(localStorage.getItem('my_vmos_list')) || [];
+        let deviceCount = 0;
 
-        function renderList() {
-            const grid = document.getElementById('device-grid');
-            document.getElementById('count').innerText = machines.length;
-            grid.innerHTML = '';
+        function showSelectProviderModal() {
+            document.getElementById('modal-provider').classList.remove('hidden');
+        }
 
-            if (machines.length === 0) {
-                grid.innerHTML = '<p style="color: #64748b;">Chưa có máy nào. Bấm nút "Nhận Máy Free" để bắt đầu.</p>';
-                return;
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+        }
+
+        // Tạo email ảo ngẫu nhiên kiểu @uberip.com
+        function generateRandomEmail() {
+            const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+            let res = '';
+            for (let i = 0; i < 10; i++) {
+                res += chars.charAt(Math.floor(Math.random() * chars.length));
             }
-
-            machines.forEach((item, index) => {
-                const card = document.createElement('div');
-                card.className = 'device-card';
-                card.innerHTML = `
-                    <div class="card-header">
-                        <strong>${item.name}</strong>
-                        <span style="color: #4ade80; font-size: 0.8rem;">Online</span>
-                    </div>
-                    <div style="padding: 15px; font-size: 0.85rem;">
-                        <p style="margin: 5px 0;"><strong>Thời gian tạo:</strong> ${item.time}</p>
-                        <p style="margin: 5px 0;"><strong>Trạng thái:</strong> Đã kết nối</p>
-                    </div>
-                    <div style="padding: 10px; background: rgba(0,0,0,0.2); display: flex; gap: 8px;">
-                        <button class="btn btn-primary" style="flex: 1;" onclick="openDevice()">Vào Điều Khiển</button>
-                        <button class="btn" style="color: #ef4444;" onclick="deleteMachine(${index})">Xóa</button>
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
+            return res + '@uberip.com';
         }
 
-        function openClaimModal() {
-            // Load trang VMOS Cloud vào iframe
-            document.getElementById('vmos-frame').src = "https://www.vmos.cn/";
-            document.getElementById('vmos-modal').classList.remove('hidden');
-        }
-
-        function closeClaimModal() {
-            document.getElementById('vmos-frame').src = "about:blank";
-            document.getElementById('vmos-modal').classList.add('hidden');
-        }
-
-        function confirmAddMachine() {
-            // Lưu thông tin máy mới vào danh sách
-            const newMachine = {
-                name: "VMOS System Gift #" + (machines.length + 1),
-                time: new Date().toLocaleString('vi-VN')
-            };
-            machines.push(newMachine);
-            localStorage.setItem('my_vmos_list', JSON.stringify(machines));
+        function openVmosAuthModal() {
+            closeModal('modal-provider');
             
-            closeClaimModal();
-            renderList();
+            const email = generateRandomEmail();
+            document.getElementById('temp-email').innerText = email;
+            document.getElementById('vmos-email-input').value = email;
+            
+            document.getElementById('vmos-form-box').classList.remove('hidden');
+            document.getElementById('vmos-otp-box').classList.add('hidden');
+            document.getElementById('otp-status').innerText = "Đang chờ mã xác minh (check mỗi 2.5s)...";
+
+            document.getElementById('modal-vmos-auth').classList.remove('hidden');
         }
 
-        function deleteMachine(index) {
-            machines.splice(index, 1);
-            localStorage.setItem('my_vmos_list', JSON.stringify(machines));
-            renderList();
+        function submitVmosRegister() {
+            // Giả lập gửi yêu cầu OTP từ VMOS
+            document.getElementById('otp-status').innerText = "Đã gửi mã xác minh! Đang tự động bắt OTP...";
+            
+            // Giả lập nhận mã OTP tự động sau 2 giây
+            setTimeout(() => {
+                const randomOtp = Math.floor(100000 + Math.random() * 900000);
+                document.getElementById('vmos-otp-input').value = randomOtp;
+                document.getElementById('vmos-otp-box').classList.remove('hidden');
+                document.getElementById('otp-status').innerText = "Mã xác minh: " + randomOtp + " (Đã tự nhận)";
+            }, 2000);
         }
 
-        function openDevice() {
-            alert("Mở giao diện điều khiển máy ảo!");
-        }
+        // Sau khi bấm xác nhận, màn hình máy VMOS sẽ xuất hiện trên giao diện Web chính
+        function finishRegisterAndCreateMachine() {
+            closeModal('modal-vmos-auth');
+            deviceCount++;
+            
+            document.getElementById('dev-count').innerText = deviceCount;
 
-        renderList();
+            // Tạo thẻ màn hình VMOS Android mới
+            const grid = document.getElementById('grid-container');
+            const addBtn = document.getElementById('btn-add-device');
+
+            const card = document.createElement('div');
+            card.className = 'device-card';
+            card.innerHTML = `
+                <div class="card-header">
+                    <span><input type="checkbox"> System Gift #${deviceCount}</span>
+                    <span style="color: #4ade80; font-size: 0.75rem;">Online</span>
+                </div>
+                <div class="screen-area">
+                    <div class="android-mockup">
+                        <div style="font-size: 2rem; margin-bottom: 10px;">📱</div>
+                        <div>Màn hình VMOS Cloud #${deviceCount}</div>
+                        <small style="color: #64748b; margin-top: 5px;">Thời gian: 4h 59m</small>
+                    </div>
+                </div>
+            `;
+
+            // Thêm máy mới vào trước nút "Nhận Máy Free"
+            grid.insertBefore(card, addBtn);
+        }
     </script>
 </body>
 </html>
