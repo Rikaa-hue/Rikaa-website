@@ -3,333 +3,211 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meows Cloud Manager</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <title>Cloudphone Manager Dashboard</title>
     <style>
-        body { background-color: #0b0f19; color: #e2e8f0; font-family: sans-serif; }
-        .grid-bg { background-image: radial-gradient(#1e293b 1px, transparent 1px); background-size: 20px 20px; }
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: #151c2c;
+            --accent-color: #2563eb;
+            --text-color: #e2e8f0;
+            --border-color: #1e293b;
+        }
+
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 20px;
+            background-color: #0d1322;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #60a5fa;
+        }
+
+        /* Control Bar */
+        .control-bar {
+            padding: 12px 20px;
+            display: flex;
+            gap: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .btn {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: white;
+            padding: 8px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-color);
+            border: none;
+        }
+
+        /* Main Grid Grid Devices */
+        .device-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .device-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-header {
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+        }
+
+        .screen-container {
+            height: 480px;
+            background-color: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .screen-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Modal Popup */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+
+        .modal {
+            background-color: var(--card-bg);
+            padding: 20px;
+            border-radius: 12px;
+            width: 320px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+
+        .provider-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .provider-btn {
+            padding: 10px;
+            background: #1e293b;
+            border: 1px solid #334155;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .provider-btn.active {
+            border-color: var(--accent-color);
+            background: #1d4ed8;
+        }
+
+        .hidden { display: none; }
     </style>
 </head>
-<body class="grid-bg min-h-screen flex flex-col" onload="loadSavedDevices()">
-    <!-- Header -->
-    <header class="border-b border-gray-800 bg-gray-900/80 backdrop-blur px-6 py-4 flex justify-between items-center">
-        <div class="flex items-center space-x-3">
-            <i class="fa-solid fa-cloud text-blue-500 text-2xl"></i>
-            <span class="font-bold text-xl tracking-wide text-white">Meows Cloud Manager</span>
-        </div>
-        <div class="flex items-center space-x-4">
-            <span class="bg-green-500/10 text-green-400 text-xs px-3 py-1 rounded-full border border-green-500/30">
-                <i class="fa-solid fa-circle text-[8px] mr-1"></i> System Online
-            </span>
-        </div>
+<body>
+
+    <header>
+        <div class="logo">CloudManager.vn</div>
+        <div><span>Máy hiện có: <strong id="device-count">1</strong></span></div>
     </header>
 
-    <!-- Main Content -->
-    <main class="flex-1 p-6 max-w-7xl mx-auto w-full">
-        <div class="flex justify-between items-center mb-6">
-            <button onclick="openCloudModal()" class="bg-blue-600 hover:bg-blue-500 text-white font-medium px-4 py-2 rounded-lg transition shadow-lg shadow-blue-600/20 flex items-center gap-2">
-                <i class="fa-solid fa-plus"></i> Nhận Máy Free
-            </button>
-            <div class="text-sm text-gray-400">Máy hiện có: <span class="text-white font-bold" id="machine-count">0</span></div>
-        </div>
-
-        <!-- Containers hiển thị danh sách máy -->
-        <div id="devices-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-    </main>
-
-    <!-- Modal Chọn Cloud -->
-    <div id="select-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
-        <div class="bg-gray-900 border border-gray-800 rounded-xl max-w-md w-full p-6 relative">
-            <button onclick="closeModal('select-modal')" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
-            <h3 class="text-lg font-bold text-white mb-4">Nhận Máy Free</h3>
-            <p class="text-sm text-gray-400 mb-4">Chọn loại Cloudphone bạn muốn tạo:</p>
-            
-            <div class="grid grid-cols-2 gap-4 mb-2">
-                <button onclick="startRegistration('vmos')" class="p-4 border border-gray-800 hover:border-blue-500 bg-gray-800/50 rounded-xl transition text-center group">
-                    <i class="fa-solid fa-mobile-screen text-2xl text-blue-400 group-hover:scale-110 transition"></i>
-                    <div class="font-semibold text-white mt-2">VMOS Cloud</div>
-                </button>
-                <button onclick="startRegistration('vsphone')" class="p-4 border border-gray-800 hover:border-green-500 bg-gray-800/50 rounded-xl transition text-center group">
-                    <i class="fa-solid fa-phone text-2xl text-green-400 group-hover:scale-110 transition"></i>
-                    <div class="font-semibold text-white mt-2">VSPhone</div>
-                </button>
-            </div>
-        </div>
+    <div class="control-bar">
+        <button class="btn">Chọn tất cả</button>
+        <button class="btn">Link Chia Sẻ</button>
+        <button class="btn btn-primary">Batch Operation</button>
     </div>
 
-    <!-- Modal Iframe Reg Máy -->
-    <div id="reg-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center z-50 p-2 md:p-4">
-        <div class="bg-gray-900 border border-gray-800 rounded-xl max-w-2xl w-full h-[92vh] flex flex-col overflow-hidden relative">
+    <main class="device-grid">
+        <!-- Thẻ Máy ảo hiện tại -->
+        <div class="device-card">
+            <div class="card-header">
+                <span><input type="checkbox"> System Gift</span>
+                <span style="color: #4ade80;">Online</span>
+            </div>
+            <div class="screen-container">
+                <!-- Vùng hiển thị màn hình Android (VNC / WebRTC / Scrcpy Web) -->
+                <p style="color: #64748b;">[Màn hình Android Live Stream]</p>
+            </div>
+        </div>
+
+        <!-- Nút Nhận Máy Mới -->
+        <div class="device-card" style="border: 2px dashed #334155; justify-content: center; align-items: center; min-height: 520px; cursor: pointer;" onclick="toggleModal(true)">
+            <div style="text-align: center;">
+                <div style="font-size: 2rem; margin-bottom: 10px;">+</div>
+                <div>Nhận Máy Free</div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal chọn dịch vụ Cloudphone -->
+    <div id="modal" class="modal-overlay hidden">
+        <div class="modal">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h3 style="margin: 0;">Nhận Máy Free</h3>
+                <span style="cursor: pointer;" onclick="toggleModal(false)">&times;</span>
+            </div>
+            <p style="font-size: 0.85rem; color: #94a3b8; margin-top: 5px;">Cloudphone: (Chọn 1)</p>
             
-            <!-- Top Toolbar -->
-            <div class="bg-gray-800/90 p-3 border-b border-gray-700 flex flex-col space-y-2 text-xs">
-                <div class="flex justify-between items-center">
-                    <span id="reg-cloud-title" class="font-bold text-blue-400 text-sm">VMOS CLOUD</span>
-                    <button onclick="closeModal('reg-modal')" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
-                </div>
-                
-                <!-- Email & Password Bar -->
-                <div class="flex items-center justify-between bg-gray-900/80 px-3 py-1.5 rounded">
-                    <span class="text-gray-400">Email tạm: <strong id="temp-email-display" class="text-yellow-400 select-all font-mono">Đang khởi tạo...</strong></span>
-                    <div class="space-x-2">
-                        <button onclick="autoFillEmail()" class="text-green-400 hover:text-green-300 font-medium"><i class="fa-solid fa-bolt"></i> Điền Email</button>
-                        <button onclick="copyEmail()" class="text-blue-400 hover:text-blue-300 font-medium"><i class="fa-regular fa-copy"></i> Copy</button>
-                    </div>
-                </div>
-
-                <!-- OTP Bar -->
-                <div class="flex items-center justify-between bg-blue-950/40 border border-blue-800/50 px-3 py-1.5 rounded">
-                    <span class="text-gray-300">OTP: <strong id="otp-display" class="text-green-400 font-mono tracking-wider">Đang chờ gửi...</strong></span>
-                    <div class="flex items-center space-x-2">
-                        <button onclick="autoFillOTP()" class="text-green-400 hover:text-green-300 font-medium"><i class="fa-solid fa-bolt"></i> Điền OTP</button>
-                        <span id="otp-status" class="text-gray-500 text-[10px]"><i class="fa-solid fa-spinner fa-spin"></i> Lắng nghe...</span>
-                    </div>
-                </div>
-
-                <!-- Token & UserId Bar -->
-                <div class="grid grid-cols-2 gap-2 bg-gray-950/80 border border-gray-700/60 p-2 rounded text-[11px]">
-                    <div class="truncate">
-                        <span class="text-gray-400">Token:</span> 
-                        <strong id="token-display" class="text-blue-400 font-mono select-all">Chưa bắt được</strong>
-                    </div>
-                    <div class="truncate">
-                        <span class="text-gray-400">UserId:</span> 
-                        <strong id="uid-display" class="text-green-400 font-mono select-all">Chưa bắt được</strong>
-                    </div>
-                </div>
+            <div class="provider-options">
+                <div class="provider-btn active">Vmos</div>
+                <div class="provider-btn">UmoCloud</div>
+                <div class="provider-btn">Vsphone</div>
+                <div class="provider-btn">Tksales</div>
             </div>
 
-            <!-- Web Frame -->
-            <div class="flex-1 w-full bg-white relative">
-                <iframe id="reg-iframe" src="" class="w-full h-full border-0"></iframe>
-            </div>
-
-            <!-- Footer Action -->
-            <div class="p-3 bg-gray-900 border-t border-gray-800 flex justify-between items-center">
-                <span id="claim-status" class="text-xs text-gray-400">Hoàn tất đăng ký trong Web rồi bấm nút lấy máy</span>
-                <button id="claim-btn" onclick="startClaimProcess()" class="bg-green-600 hover:bg-green-500 text-white font-medium px-4 py-2 rounded-lg text-sm transition">
-                    <i class="fa-solid fa-gift mr-1"></i> Lấy Máy
-                </button>
-            </div>
+            <button class="btn btn-primary" style="width: 100%; padding: 10px;" onclick="claimDevice()">Lấy máy</button>
         </div>
     </div>
 
     <script>
-        const BACKEND_URL = window.location.hostname.includes('github.io') 
-            ? 'https://rikaa.wisp.uno'  // Cấu hình tên miền backend Wispbyte
-            : window.location.origin;
-
-        let currentCloud = '';
-        let currentEmail = '';
-        let currentPassword = '';
-        let currentOTP = '';
-        let otpPollInterval = null;
-
-        function openCloudModal() {
-            document.getElementById('select-modal').classList.remove('hidden');
-            document.getElementById('select-modal').classList.add('flex');
+        function toggleModal(show) {
+            const modal = document.getElementById('modal');
+            if (show) modal.classList.remove('hidden');
+            else modal.classList.add('hidden');
         }
 
-        function closeModal(id) {
-            document.getElementById(id).classList.add('hidden');
-            document.getElementById(id).classList.remove('flex');
-            if(id === 'reg-modal') clearInterval(otpPollInterval);
-        }
-
-        async function startRegistration(cloud) {
-            currentCloud = cloud;
-            closeModal('select-modal');
-
-            document.getElementById('reg-cloud-title').innerText = cloud.toUpperCase() + ' CLOUD';
-            document.getElementById('temp-email-display').innerText = 'Đang khởi tạo...';
-            document.getElementById('otp-display').innerText = 'Đang chờ gửi...';
-            document.getElementById('token-display').innerText = 'Chưa bắt được';
-            document.getElementById('uid-display').innerText = 'Chưa bắt được';
-            document.getElementById('reg-modal').classList.remove('hidden');
-            document.getElementById('reg-modal').classList.add('flex');
-
-            document.getElementById('reg-iframe').src = cloud === 'vmos' ? 'https://cloud.vmoscloud.com/' : 'https://cloud.vsphone.com/?channel=web';
-
-            try {
-                const res = await fetch(`${BACKEND_URL}/api/create-mail`, { method: 'POST' });
-                const data = await res.json();
-                if(data.status === 'ok') {
-                    currentEmail = data.email;
-                    currentPassword = data.password;
-                    document.getElementById('temp-email-display').innerText = currentEmail;
-                    
-                    // Tự động copy Email vào Clipboard để bé tiện Paste
-                    navigator.clipboard.writeText(currentEmail);
-                    startPollingOTP();
-                } else {
-                    document.getElementById('temp-email-display').innerText = 'Lỗi server tạo mail!';
-                }
-            } catch (e) {
-                document.getElementById('temp-email-display').innerText = 'Lỗi kết nối Backend!';
-            }
-        }
-
-        function copyEmail() {
-            navigator.clipboard.writeText(currentEmail);
-            alert('Đã copy Email: ' + currentEmail);
-        }
-
-        // Tự động điền Email vào Iframe
-        function autoFillEmail() {
-            if (!currentEmail) return alert('Chưa có email!');
-            navigator.clipboard.writeText(currentEmail);
-            
-            try {
-                const iframe = document.getElementById('reg-iframe');
-                const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-                const emailInput = iframeDoc.querySelector('input[type="email"], input[placeholder*="email"], input[placeholder*="mail"]');
-                if (emailInput) {
-                    emailInput.value = currentEmail;
-                    emailInput.dispatchEvent(new Event('input', { bubbles: true }));
-                    alert('Đã điền Email!');
-                } else {
-                    alert('Đã copy Email vào khay nhớ tạm! Bé nhấn giữ ô nhập trên web để Dán (Paste) nhé.');
-                }
-            } catch (e) {
-                alert('Đã copy Email! Do bảo mật web gốc, bé nhấn giữ ô Email để Dán (Paste) nhé.');
-            }
-        }
-
-        // Tự động điền OTP vào Iframe
-        function autoFillOTP() {
-            if (!currentOTP) return alert('Chưa có OTP!');
-            navigator.clipboard.writeText(currentOTP);
-
-            try {
-                const iframe = document.getElementById('reg-iframe');
-                const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-                const otpInput = iframeDoc.querySelector('input[placeholder*="code"], input[placeholder*="otp"], input[placeholder*="mã"]');
-                if (otpInput) {
-                    otpInput.value = currentOTP;
-                    otpInput.dispatchEvent(new Event('input', { bubbles: true }));
-                    alert('Đã điền OTP!');
-                } else {
-                    alert('Đã copy OTP ' + currentOTP + '! Bé nhấn giữ ô mã xác nhận để Dán nhé.');
-                }
-            } catch (e) {
-                alert('Đã copy OTP ' + currentOTP + '! Bé nhấn giữ ô mã xác nhận để Dán nhé.');
-            }
-        }
-
-        function startPollingOTP() {
-            if(otpPollInterval) clearInterval(otpPollInterval);
-            otpPollInterval = setInterval(async () => {
-                try {
-                    const res = await fetch(`${BACKEND_URL}/api/get-otp?email=${encodeURIComponent(currentEmail)}`);
-                    const data = await res.json();
-                    if(data.otp) {
-                        currentOTP = data.otp;
-                        document.getElementById('otp-display').innerText = currentOTP;
-                        document.getElementById('otp-status').innerHTML = '<span class="text-green-400">✓ Đã tìm thấy!</span>';
-                        
-                        // Tự động copy OTP vào bộ nhớ tạm
-                        navigator.clipboard.writeText(currentOTP);
-                    }
-                } catch(e) {}
-            }, 3000);
-        }
-
-        async function startClaimProcess() {
-            if(!currentEmail) return alert('Chưa tạo được email!');
-            
-            const btn = document.getElementById('claim-btn');
-            const tokenDisp = document.getElementById('token-display');
-            const uidDisp = document.getElementById('uid-display');
-
-            btn.disabled = true;
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang bắt Token & Lấy máy...';
-
-            try {
-                const res = await fetch(`${BACKEND_URL}/api/claim-trial`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ cloud: currentCloud, email: currentEmail, password: currentPassword })
-                });
-                
-                const data = await res.json();
-                if(data.status === 'ok') {
-                    tokenDisp.innerText = data.token ? data.token.substring(0, 16) + '...' : 'Không lấy được';
-                    uidDisp.innerText = data.userId || 'Không lấy được';
-
-                    alert(`✅ Thành công! Tên máy: ${data.machine_name}`);
-                    closeModal('reg-modal');
-                    
-                    // Lưu máy vào bộ nhớ bền vững LocalStorage
-                    saveDeviceToStorage(data);
-                } else {
-                    alert(`❌ Lỗi: ${data.msg}`);
-                }
-            } catch(e) {
-                alert('Lỗi kết nối tới server Backend!');
-            } finally {
-                btn.disabled = false;
-                btn.innerHTML = '<i class="fa-solid fa-gift mr-1"></i> Lấy Máy';
-            }
-        }
-
-        // ==================== KHU VỰC LƯU TRỮ LOCALSTORAGE ====================
-        function getSavedDevices() {
-            const data = localStorage.getItem('meows_cloud_devices');
-            return data ? JSON.parse(data) : [];
-        }
-
-        function saveDeviceToStorage(device) {
-            const devices = getSavedDevices();
-            device.id = Date.now(); // Tạo ID định danh máy
-            devices.unshift(device); // Đưa máy mới lên đầu
-            localStorage.setItem('meows_cloud_devices', JSON.stringify(devices));
-            renderDevices();
-        }
-
-        function deleteDevice(id) {
-            if (confirm('Bé có chắc chắn muốn xóa máy này khỏi danh sách không?')) {
-                let devices = getSavedDevices();
-                devices = devices.filter(d => d.id !== id);
-                localStorage.setItem('meows_cloud_devices', JSON.stringify(devices));
-                renderDevices();
-            }
-        }
-
-        function loadSavedDevices() {
-            renderDevices();
-        }
-
-        function renderDevices() {
-            const container = document.getElementById('devices-container');
-            container.innerHTML = '';
-            const devices = getSavedDevices();
-
-            devices.forEach(device => {
-                const card = document.createElement('div');
-                card.className = "bg-gray-900 border border-gray-800 rounded-xl p-4 shadow-lg flex flex-col justify-between space-y-3 relative group";
-                card.innerHTML = `
-                    <div class="flex justify-between items-center border-b border-gray-800 pb-2">
-                        <span class="font-bold text-white">${device.machine_name}</span>
-                        <div class="flex items-center space-x-2">
-                            <span class="text-xs bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded font-semibold">${device.cloud.toUpperCase()}</span>
-                            <button onclick="deleteDevice(${device.id})" class="text-red-400 hover:text-red-300 text-xs px-1.5 py-0.5 rounded border border-red-500/30 hover:bg-red-500/10 transition" title="Xóa máy">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="text-xs space-y-1 text-gray-400 font-mono">
-                        <div>Email: <span class="text-gray-200 select-all">${device.email}</span></div>
-                        <div>Pass: <span class="text-gray-200 select-all">${device.password}</span></div>
-                        <div>UserId: <span class="text-green-400 select-all">${device.userId || 'N/A'}</span></div>
-                        <div class="truncate">Token: <span class="text-blue-400 select-all">${device.token || 'N/A'}</span></div>
-                        <div>Share: <span class="text-yellow-400 select-all">${device.share_code || 'N/A'}</span></div>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-
-            document.getElementById('machine-count').innerText = devices.length;
+        function claimDevice() {
+            alert("Bắt đầu tiến trình tự động tạo tài khoản & lấy máy...");
+            toggleModal(false);
         }
     </script>
 </body>
